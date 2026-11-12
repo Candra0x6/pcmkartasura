@@ -74,6 +74,21 @@
         </div>
     </nav>
 
+    <!-- BAR JADWAL SHALAT (WIDGET) -->
+    {% if jadwal_shalat %}
+    <div class="bg-success text-white py-1 shadow-sm">
+        <div class="container text-center" style="font-size: 0.9rem;">
+            <span class="me-3 fw-bold">{{ jadwal_shalat.tanggal }}</span>
+            <span class="me-3">Imsak: {{ jadwal_shalat.imsak }}</span>
+            <span class="me-3">Subuh: {{ jadwal_shalat.subuh }}</span>
+            <span class="me-3">Dzuhur: {{ jadwal_shalat.dzuhur }}</span>
+            <span class="me-3">Ashar: {{ jadwal_shalat.ashar }}</span>
+            <span class="me-3">Maghrib: {{ jadwal_shalat.maghrib }}</span>
+            <span>Isya: {{ jadwal_shalat.isya }}</span>
+        </div>
+    </div>
+    {% endif %}
+
     <!-- KONTEN UTAMA (Tempat halaman lain muncul) -->
     <main class="container my-5">
         {% block content %}
