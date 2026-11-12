@@ -1,0 +1,33 @@
+{% extends 'pcm_web/base.html' %}
+
+{% block title %}Hasil Pencarian - Website PCM{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h3 class="mb-4">Hasil Pencarian: "{{ query }}"</h3>
+
+        {% if hasil %}
+        <div class="list-group">
+            {% for berita in hasil %}
+            <a href="#" class="list-group-item list-group-item-action mb-2 shadow-sm rounded">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1 text-primary">{{ berita.judul }}</h5>
+                    <small class="text-muted">{{ berita.tanggal_terbit|date:"d M Y" }}</small>
+                </div>
+                <p class="mb-1">{{ berita.ringkasan }}</p>
+            </a>
+            {% endfor %}
+        </div>
+        {% elif query %}
+        <div class="alert alert-warning" role="alert">
+            Maaf, tidak ditemukan berita dengan kata kunci "<strong>{{ query }}</strong>".
+        </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            Silakan masukkan kata kunci pada kotak pencarian di atas.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
