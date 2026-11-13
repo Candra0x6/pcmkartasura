@@ -1,0 +1,111 @@
+<!-- Mewarisi struktur tata letak utama (Navbar, Jadwal Shalat, dan Footer) dari base.html -->
+{% extends 'pcm_web/base.html' %}
+
+<!-- Mengatur judul tab browser khusus untuk halaman Beranda -->
+{% block title %}Beranda - PCM Kartasura{% endblock %}
+
+<!-- Memulai blok konten utama yang akan disisipkan ke dalam tag <main> di base.html -->
+{% block content %}
+
+<!-- HERO SECTION: Banner utama di bagian atas halaman dengan latar warna Navy -->
+<div class="p-4 p-md-5 mb-5 rounded-4 shadow-sm text-white" style="background-color: var(--pcm-navy);">
+    <div class="row align-items-center g-4">
+        
+        <!-- Kolom Kiri: Berisi identitas organisasi, tagline, dan tombol navigasi cepat -->
+        <div class="col-lg-7">
+            <span class="badge mb-3 px-3 py-2" style="background-color: var(--pcm-hijau);">
+                Pimpinan Cabang Muhammadiyah Kartasura
+            </span>
+            
+            <!-- Menampilkan nama organisasi dari database, atau teks bawaan (default) jika database masih kosong -->
+            <h1 class="display-5 fw-bold mb-3">
+                {{ profil.nama_organisasi|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}
+            </h1>
+            
+            <!-- Menampilkan tagline/motto PCM dari database atau teks default -->
+            <p class="lead mb-4" style="color: var(--pcm-cream);">
+                {{ profil.tagline|default:"Meneguhkan Dakwah Islam Berkemajuan untuk Masyarakat Kartasura yang Mencerahkan." }}
+            </p>
+            
+            <!-- Tombol aksi menuju halaman Profil dan halaman Amal Usaha -->
+            <div class="d-flex flex-wrap gap-2">
+                <a href="/profil/" class="btn btn-lg fw-semibold text-white" style="background-color: var(--pcm-hijau);">
+                    Profil & Struktur Pimpinan
+                </a>
+                <a href="/amal-usaha/" class="btn btn-outline-light btn-lg">
+                    Lihat Amal Usaha
+                </a>
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Menampilkan foto utama gedung/pengurus dari database -->
+        <div class="col-lg-5 text-center">
+            <!-- Mengecek apakah admin sudah mengunggah foto utama -->
+            {% if profil.foto_utama %}
+                <img src="{{ profil.foto_utama.url }}" alt="Gedung Dakwah PCM Kartasura" class="img-fluid rounded-3 shadow">
+            {% else %}
+                <!-- Kotak pengganti (placeholder) jika foto belum diunggah -->
+                <div class="p-5 rounded-3 border border-light border-opacity-25" style="background-color: rgba(255,255,255,0.1);">
+                    <p class="mb-0 text-white-50">Foto Gedung Dakwah / Pengurus PCM Kartasura</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- SAMBUTAN & SEKILAS PROFIL: Kartu ringkasan informasi tentang PCM Kartasura -->
+<div class="card border-0 shadow-sm rounded-4 mb-5 bg-white">
+    <div class="card-body p-4 p-md-5">
+        <h2 class="fw-bold mb-3" style="color: var(--pcm-navy);">Sambutan & Sekilas Profil</h2>
+        <hr style="border-color: var(--pcm-hijau); width: 80px; border-width: 3px; opacity: 1;">
+        
+        <!-- Menampilkan teks sejarah/sambutan dari database atau teks sambutan bawaan -->
+        <p class="text-secondary fs-5 lh-lg mb-0">
+            {{ profil.sejarah|default:"Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di website resmi Pimpinan Cabang Muhammadiyah (PCM) Kartasura. Portal ini menjadi pusat informasi dakwah, program kerja, serta berbagai Amal Usaha Muhammadiyah di wilayah Kartasura." }}
+        </p>
+    </div>
+</div>
+
+<!-- PREVIEW PIMPINAN HARIAN: Menampilkan maksimal 4 pengurus inti di halaman depan -->
+<div class="mb-4">
+    <!-- Header bagian Pimpinan Harian beserta tombol menuju halaman profil lengkap -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold mb-0" style="color: var(--pcm-navy);">Pimpinan Harian</h3>
+        <a href="/profil/" class="btn btn-sm text-white px-3" style="background-color: var(--pcm-hijau);">Lihat Semua &rarr;</a>
+    </div>
+
+    <!-- Grid daftar kartu pimpinan -->
+    <div class="row g-4">
+        <!-- Perulangan (looping) untuk menampilkan setiap data pimpinan dari variabel pimpinan_inti -->
+        {% for item in pimpinan_inti %}
+        <div class="col-sm-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white">
+                
+                <!-- Menampilkan foto profil pimpinan jika tersedia, atau inisial huruf pertama jika kosong -->
+                {% if item.foto %}
+                    <img src="{{ item.foto.url }}" alt="{{ item.nama }}" class="rounded-circle mx-auto mb-3 object-fit-cover" style="width: 110px; height: 110px; border: 3px solid var(--pcm-hijau);">
+                {% else %}
+                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center text-white fw-bold fs-4" style="width: 110px; height: 110px; background-color: var(--pcm-navy);">
+                        {{ item.nama|slice:":1" }}
+                    </div>
+                {% endif %}
+                
+                <!-- Menampilkan nama lengkap dan jabatan pimpinan -->
+                <h5 class="fw-bold mb-1" style="color: var(--pcm-navy);">{{ item.nama }}</h5>
+                <p class="small fw-semibold mb-0" style="color: var(--pcm-hijau);">{{ item.jabatan }}</p>
+            </div>
+        </div>
+        
+        <!-- Pesan pemberitahuan jika tabel Pimpinan di database masih kosong -->
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-light border text-muted">
+                Data pimpinan belum diinput. Silakan tambahkan melalui panel Admin Django.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Menutup blok konten utama -->
+{% endblock %}

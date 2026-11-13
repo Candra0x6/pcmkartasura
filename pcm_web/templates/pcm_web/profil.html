@@ -1,0 +1,103 @@
+<!-- Mewarisi struktur tata letak utama (Navbar, Jadwal Shalat, dan Footer) dari base.html -->
+{% extends 'pcm_web/base.html' %}
+
+<!-- Mengatur judul tab browser khusus untuk halaman Profil & Struktur Pimpinan -->
+{% block title %}Profil & Struktur Pimpinan - PCM Kartasura{% endblock %}
+
+<!-- Memulai blok konten utama yang akan disisipkan ke dalam tag <main> di base.html -->
+{% block content %}
+
+<!-- HEADER HALAMAN: Judul utama halaman dan garis pemisah berwarna hijau khas PCM -->
+<div class="mb-5">
+    <h1 class="fw-bold" style="color: var(--pcm-navy);">Profil PCM Kartasura</h1>
+    <p class="text-muted">Mengenal sejarah, visi misi, serta susunan kepengurusan Pimpinan Cabang Muhammadiyah Kartasura.</p>
+    <hr style="border-color: var(--pcm-hijau); border-width: 2px; opacity: 1;">
+</div>
+
+<!-- SEJARAH SINGKAT: Kartu putih yang menampilkan riwayat berdirinya PCM Kartasura -->
+<div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+    <div class="card-body p-4 p-md-5">
+        <h3 class="fw-bold mb-3" style="color: var(--pcm-navy);">Sejarah Singkat</h3>
+        
+        <!-- Menampilkan isi sejarah dari database, atau pesan default jika data masih kosong -->
+        <p class="text-secondary lh-lg mb-0">
+            {{ profil.sejarah|default:"Data sejarah singkat PCM Kartasura belum diisi. Silakan lengkapi melalui panel Admin Django." }}
+        </p>
+    </div>
+</div>
+
+<!-- VISI & MISI: Tata letak dua kolom berdampingan dengan kombinasi warna Navy dan Hijau -->
+<div class="row g-4 mb-5">
+    
+    <!-- Kolom Kiri: Kartu Visi berlatar Navy -->
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm rounded-4 text-white" style="background-color: var(--pcm-navy);">
+            <div class="card-body p-4">
+                <h3 class="fw-bold mb-3" style="color: var(--pcm-cream);">Visi</h3>
+                
+                <!-- Menampilkan teks visi dari database atau teks default -->
+                <p class="lh-lg mb-0">
+                    {{ profil.visi|default:"Terwujudnya masyarakat Islam yang sebenar-benarnya di wilayah Kecamatan Kartasura." }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kolom Kanan: Kartu Misi berlatar Hijau -->
+    <div class="col-md-6">
+        <div class="card h-100 border-0 shadow-sm rounded-4 text-white" style="background-color: var(--pcm-hijau);">
+            <div class="card-body p-4">
+                <h3 class="fw-bold mb-3">Misi</h3>
+                
+                <!-- Menampilkan teks misi dari database atau teks default -->
+                <p class="lh-lg mb-0">
+                    {{ profil.misi|default:"Menyelenggarakan dakwah amar ma'ruf nahi munkar, memajukan pendidikan, kesehatan, dan kesejahteraan sosial umat." }}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STRUKTUR PIMPINAN: Menampilkan daftar seluruh pengurus PCM Kartasura dalam bentuk grid kartu -->
+<div class="mb-4">
+    <h2 class="fw-bold mb-4" style="color: var(--pcm-navy);">Struktur Pimpinan</h2>
+    
+    <div class="row g-4">
+        <!-- Perulangan (looping) untuk menampilkan setiap pengurus dari variabel daftar_pimpinan -->
+        {% for pimpinan in daftar_pimpinan %}
+        <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white">
+                
+                <!-- Mengecek apakah foto pengurus tersedia; jika tidak ada, tampilkan inisial huruf pertama namanya -->
+                {% if pimpinan.foto %}
+                    <img src="{{ pimpinan.foto.url }}" alt="{{ pimpinan.nama }}" class="rounded-circle mx-auto mb-3 object-fit-cover" style="width: 120px; height: 120px; border: 3px solid var(--pcm-hijau);">
+                {% else %}
+                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center text-white fs-4 fw-bold" style="width: 120px; height: 120px; background-color: var(--pcm-navy);">
+                        {{ pimpinan.nama|slice:":1" }}
+                    </div>
+                {% endif %}
+                
+                <!-- Menampilkan nama lengkap dan jabatan pengurus -->
+                <h5 class="fw-bold mb-1" style="color: var(--pcm-navy);">{{ pimpinan.nama }}</h5>
+                <p class="fw-semibold mb-1" style="color: var(--pcm-hijau);">{{ pimpinan.jabatan }}</p>
+                
+                <!-- Menampilkan lencana (badge) masa periode jabatan jika datanya diisi di database -->
+                {% if pimpinan.periode %}
+                    <span class="badge bg-light text-dark border mt-1">Periode {{ pimpinan.periode }}</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Pesan pemberitahuan jika tabel Pimpinan di database masih kosong -->
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-light border text-muted">
+                Belum ada data struktur pimpinan yang diinput. Silakan input melalui panel Admin Django.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Menutup blok konten utama -->
+{% endblock %}
