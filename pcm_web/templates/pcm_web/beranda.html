@@ -1,290 +1,159 @@
-<!-- Mewarisi struktur tata letak utama (Navbar, Jadwal Shalat, dan Footer) dari base.html -->
+<!-- Mewarisi kerangka tata letak utama (Navbar, Jadwal Shalat, dan Footer) dari base.html -->
 {% extends 'pcm_web/base.html' %}
 
+<!-- Mengatur judul tab browser khusus untuk halaman Beranda -->
 {% block title %}Beranda - PCM Kartasura{% endblock %}
 
+<!-- Memulai blok konten utama yang akan dimasukkan ke dalam <main> di base.html -->
 {% block content %}
-<!-- HERO SECTION: FITUR SWITCHER PLAN A & PLAN B -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-12">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
-        <div>
-            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#059669]/10 text-[#059669] mb-2">
-                Beranda Utama
-            </span>
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#0F2537] tracking-tight">
-                {% if profil %}{{ profil.nama_pcm }}{% else %}Pimpinan Cabang Muhammadiyah Kartasura{% endif %}
-            </h1>
-        </div>
 
-        <!-- Tombol Toggle Switcher Plan A & Plan B -->
-        <div class="inline-flex rounded-xl bg-white p-1 shadow-sm border border-slate-200 self-start md:self-auto" role="group">
-            <button type="button" onclick="switchHeroPlan('planA')" id="btn-planA"
-                class="hero-toggle-btn px-3.5 py-2 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-[#0F2537]">
-                Hanya Plan A
+<!-- CSS Kustom: Memperhalus tampilan gradasi, bayangan kartu, dan tombol tanpa mengubah base.html -->
+<style>
+    /* Efek latar belakang gradasi Navy elegan untuk bagian Hero */
+    .hero-pcm {
+        background: linear-gradient(135deg, #000066 0%, #000080 60%, #103778 100%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+    /* Animasi kartu terangkat halus saat disentuh kursor (hover) */
+    .card-hover {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 24px rgba(0, 0, 128, 0.12) !important;
+    }
+    /* Gaya tombol hijau khas Muhammadiyah beserta efek hover */
+    .btn-pcm-green {
+        background-color: var(--pcm-hijau);
+        color: #ffffff;
+        border: none;
+        transition: all 0.2s ease;
+    }
+    .btn-pcm-green:hover {
+        background-color: #236b43;
+        color: #ffffff;
+        transform: translateY(-2px);
+    }
+    /* Penanda warna aktif untuk tombol switcher Sambutan / Motto Dakwah */
+    .hero-toggle-btn.active {
+        background-color: var(--pcm-hijau) !important;
+        color: #ffffff !important;
+        border-color: var(--pcm-hijau) !important;
+    }
+</style>
+
+<!-- 1. HERO SECTION & SWITCHER SAMBUTAN / MOTTO DAKWAH -->
+<div class="hero-pcm p-4 p-md-5 mb-5 rounded-4 shadow text-white">
+    
+    <!-- Baris Atas Hero: Lencana identitas dan tombol pengatur tampilan kartu -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <span class="badge px-3 py-2 rounded-pill" style="background-color: var(--pcm-hijau);">
+            Portal Resmi Persyarikatan
+        </span>
+
+        <!-- Grup tombol interaktif untuk memilih tampilan Sambutan, Motto, atau Keduanya -->
+        <div class="btn-group btn-group-sm bg-white p-1 rounded-3 shadow-sm" role="group">
+            <button type="button" onclick="switchHeroPlan('planA')" id="btn-planA" class="btn btn-light hero-toggle-btn fw-semibold">
+                Sambutan
             </button>
-            <button type="button" onclick="switchHeroPlan('planB')" id="btn-planB"
-                class="hero-toggle-btn px-3.5 py-2 text-xs font-semibold rounded-lg transition text-slate-600 hover:text-[#0F2537]">
-                Hanya Plan B
+            <button type="button" onclick="switchHeroPlan('planB')" id="btn-planB" class="btn btn-light hero-toggle-btn fw-semibold">
+                Motto Dakwah
             </button>
-            <button type="button" onclick="switchHeroPlan('both')" id="btn-both"
-                class="hero-toggle-btn px-3.5 py-2 text-xs font-semibold rounded-lg transition bg-[#059669] text-white shadow-sm">
-                Tampilkan Keduanya
+            <button type="button" onclick="switchHeroPlan('both')" id="btn-both" class="btn btn-light hero-toggle-btn active fw-semibold">
+                Keduanya
             </button>
         </div>
     </div>
 
-    <!-- Container 2 Card Hero -->
-    <div id="hero-cards-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Baris Konten Hero: Terbagi menjadi 2 kartu berdampingan -->
+    <div class="row g-4 align-items-stretch">
         
-        <!-- PLAN A CARD: Foto Ketua & Sambutan Resmi -->
-        <div id="card-plan-a" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row gap-6 items-start transition-all duration-300">
-            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden bg-[#0F2537] flex-shrink-0 border-2 border-[#059669] shadow-sm flex items-center justify-center">
-                {% if profil and profil.foto_ketua %}
-                    <img src="{{ profil.foto_ketua.url }}" alt="Ketua PCM Kartasura" class="w-full h-full object-cover">
-                {% else %}
-                    <span class="text-white font-bold text-xs text-center px-2">Foto Ketua PCM</span>
-                {% endif %}
-            </div>
-            <div class="flex-1">
-                <span class="text-[11px] font-bold uppercase tracking-wider text-[#059669] bg-[#059669]/10 px-2.5 py-0.5 rounded">
-                    Plan A &bull; Sambutan Resmi
-                </span>
-                <h2 class="text-lg font-bold text-[#0F2537] mt-2 mb-2">Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
-                <p class="text-sm text-slate-600 leading-relaxed">
-                    {% if profil %}
-                        {{ profil.sambutan_ketua }}
-                    {% else %}
-                        Selamat datang di portal digital resmi Pimpinan Cabang Muhammadiyah Kartasura. Media ini hadir sebagai pusat informasi dakwah, sinergi Amal Usaha Muhammadiyah, serta transparansi gerakan persyarikatan yang berkemajuan.
-                    {% endif %}
-                </p>
-                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
-                    <div>
-                        <p class="text-xs font-bold text-[#0F2537]">Ketua Pimpinan Cabang Muhammadiyah</p>
-                        <p class="text-xs text-slate-500">Periode Muktamar ke-48</p>
-                    </div>
-                    <a href="{% url 'pcm_web:profil' %}" class="text-xs font-semibold text-[#059669] hover:underline">
-                        Selengkapnya &rarr;
+        <!-- Kartu Kiri (Plan A): Identitas organisasi, tagline, dan tombol navigasi utama -->
+        <div class="col-lg-7" id="card-plan-a">
+            <div class="h-100 p-4 rounded-4 d-flex flex-column justify-content-between" style="background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <div>
+                    <!-- Menampilkan nama organisasi dari database atau teks default jika belum diisi -->
+                    <h1 class="display-6 fw-bold mb-3">
+                        {{ profil.nama_organisasi|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}
+                    </h1>
+                    <!-- Menampilkan tagline dari database atau teks default -->
+                    <p class="lead mb-4" style="color: var(--pcm-cream); font-size: 1.05rem;">
+                        {{ profil.tagline|default:"Meneguhkan Dakwah Islam Berkemajuan untuk Masyarakat Kartasura yang Mencerahkan." }}
+                    </p>
+                </div>
+                <!-- Tombol pintasan menuju halaman Profil dan Amal Usaha -->
+                <div class="d-flex flex-wrap gap-2 pt-2">
+                    <a href="/profil/" class="btn btn-pcm-green px-4 py-2 fw-semibold">
+                        Profil & Struktur Pimpinan
+                    </a>
+                    <a href="/amal-usaha/" class="btn btn-outline-light px-4 py-2 fw-semibold">
+                        Jelajahi Amal Usaha
                     </a>
                 </div>
             </div>
         </div>
 
-        <!-- PLAN B CARD: Quotes Mutiara Dakwah K.H. Ahmad Dahlan -->
-        <div id="card-plan-b" class="bg-[#0F2537] text-white rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden flex flex-col justify-between transition-all duration-300">
-            <div class="relative z-10">
-                <div class="flex items-center justify-between mb-4">
-                    <span class="text-[11px] font-bold uppercase tracking-wider bg-[#059669] text-white px-2.5 py-0.5 rounded">
-                        Plan B &bull; Mutiara Dakwah
-                    </span>
-                    <svg class="w-8 h-8 text-[#059669]/40" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-                    </svg>
+        <!-- Kartu Kanan (Plan B): Kutipan mutiara dakwah K.H. Ahmad Dahlan -->
+        <div class="col-lg-5" id="card-plan-b">
+            <div class="h-100 p-4 rounded-4 d-flex flex-column justify-content-between text-white" style="background-color: var(--pcm-hijau);">
+                <div>
+                    <span class="badge bg-white text-dark mb-3">Mutiara Dakwah</span>
+                    <blockquote class="fs-5 fst-italic fw-medium lh-base mb-4">
+                        "Hidup-hidupilah Muhammadiyah, jangan mencari hidup di Muhammadiyah. Berbuatlah ikhlas demi kemaslahatan umat."
+                    </blockquote>
                 </div>
-                <blockquote class="text-lg sm:text-xl font-semibold leading-relaxed text-[#FAF6F0] italic">
-                    "{% if profil %}{{ profil.quote_harian }}{% else %}Hidup-hidupilah Muhammadiyah, jangan mencari hidup di Muhammadiyah. Berbuatlah ikhlas tanpa pamrih demi kejayaan Islam dan kemaslahatan umat.{% endif %}"
-                </blockquote>
-            </div>
-            <div class="relative z-10 mt-6 pt-4 border-t border-slate-700">
-                <p class="text-sm font-bold text-emerald-400">K.H. Ahmad Dahlan</p>
-                <p class="text-xs text-slate-300">Pendiri Persyarikatan Muhammadiyah</p>
-            </div>
-        </div>
-
-    </div>
-</section>
-
-<!-- DIREKTORI AUM (TAB FILTER INTERAKTIF) -->
-<section id="aum" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200/70">
-    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <div>
-            <h2 class="text-2xl font-bold text-[#0F2537]">Direktori Amal Usaha Muhammadiyah (AUM)</h2>
-            <p class="text-sm text-slate-600 mt-1">Filter unit amal usaha berdasarkan bidang garap di wilayah Kartasura.</p>
-        </div>
-
-        <!-- Tab Filter Buttons -->
-        <div class="flex flex-wrap gap-2" id="aum-tabs">
-            <button type="button" onclick="filterAUM('ALL', this)"
-                class="aum-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-[#059669] text-white shadow-sm transition">
-                Semua Bidang
-            </button>
-            <button type="button" onclick="filterAUM('Pendidikan', this)"
-                class="aum-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Pendidikan
-            </button>
-            <button type="button" onclick="filterAUM('Kesehatan', this)"
-                class="aum-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Kesehatan
-            </button>
-            <button type="button" onclick="filterAUM('Sosial', this)"
-                class="aum-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Sosial
-            </button>
-            <button type="button" onclick="filterAUM('Ekonomi', this)"
-                class="aum-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Ekonomi
-            </button>
-        </div>
-    </div>
-
-    <!-- Grid Kartu AUM -->
-    <div id="aum-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for item in daftar_aum %}
-        <div class="aum-card bg-white rounded-xl p-6 shadow-sm border border-slate-200 hover:border-[#059669] transition flex flex-col justify-between" data-kategori="{{ item.kategori }}">
-            <div>
-                <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold bg-[#059669]/10 text-[#059669] mb-3">
-                    {{ item.kategori }}
-                </span>
-                <h3 class="text-lg font-bold text-[#0F2537] mb-2">{{ item.nama }}</h3>
-                <p class="text-sm text-slate-600 leading-relaxed mb-4">{{ item.deskripsi }}</p>
-            </div>
-            <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 flex items-start gap-1.5">
-                <svg class="w-4 h-4 text-[#059669] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                <span>{{ item.alamat }}</span>
-            </div>
-        </div>
-        {% empty %}
-        <div class="aum-card bg-white rounded-xl p-6 shadow-sm border border-slate-200" data-kategori="Pendidikan">
-            <span class="inline-block px-2.5 py-1 rounded-md text-xs font-semibold bg-[#059669]/10 text-[#059669] mb-3">Pendidikan</span>
-            <h3 class="text-lg font-bold text-[#0F2537] mb-2">SD Muhammadiyah Program Khusus Kartasura</h3>
-            <p class="text-sm text-slate-600 mb-4">Lembaga pendidikan dasar unggulan berbasis karakter Islami dan sains.</p>
-            <p class="text-xs text-slate-500">Data AUM dapat dikelola melalui panel /admin/.</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
-
-<!-- BANNER RINGKASAN DASHBOARD KEPANITIAAN -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col lg:flex-row items-center justify-between gap-6">
-        <div class="flex-1">
-            <div class="flex items-center space-x-2 mb-2">
-                <span class="px-2.5 py-0.5 rounded text-xs font-bold bg-[#0F2537] text-white">Monitoring Real-Time</span>
-                <span class="text-xs font-semibold text-[#059669]">Kesiapan Kegiatan Cabang</span>
-            </div>
-            <h3 class="text-xl font-bold text-[#0F2537]">Progress Kesiapan Kepanitiaan Kegiatan</h3>
-            <p class="text-sm text-slate-600 mt-1">
-                Telah terselesaikan <strong>{{ tugas_selesai|default:0 }}</strong> dari total <strong>{{ total_tugas|default:0 }}</strong> item tugas kepanitiaan aktif.
-            </p>
-            <div class="w-full bg-slate-200 rounded-full h-3 mt-4 overflow-hidden">
-                <div class="bg-[#059669] h-3 rounded-full transition-all duration-500" style="width: {{ persentase_kesiapan|default:0 }}%"></div>
-            </div>
-        </div>
-        <div class="flex items-center gap-4">
-            <div class="text-right">
-                <span class="block text-3xl font-extrabold text-[#059669]">{{ persentase_kesiapan|default:0 }}%</span>
-                <span class="text-xs text-slate-500 font-medium">Total Kesiapan</span>
-            </div>
-            <a href="{% url 'pcm_web:dashboard_panitia' %}" class="px-5 py-3 rounded-xl bg-[#0F2537] hover:bg-[#183852] text-white text-sm font-semibold transition shadow-sm">
-                Buka Dashboard &rarr;
-            </a>
-        </div>
-    </div>
-</section>
-
-<!-- BERITA TERBARU & PIMPINAN RANTING (PRM) -->
-<section id="informasi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Kolom Berita (2/3) -->
-        <div class="lg:col-span-2">
-            <h2 class="text-2xl font-bold text-[#0F2537] mb-6">Berita & Informasi Terbaru</h2>
-            <div class="space-y-4">
-                {% for berita in berita_terbaru %}
-                <article class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-5">
-                    {% if berita.gambar %}
-                    <img src="{{ berita.gambar.url }}" alt="{{ berita.judul }}" class="w-full sm:w-40 h-32 object-cover rounded-lg flex-shrink-0">
-                    {% endif %}
-                    <div>
-                        <span class="text-xs font-semibold text-[#059669]">{{ berita.tanggal_publikasi|date:"d M Y" }}</span>
-                        <h3 class="text-lg font-bold text-[#0F2537] mt-1">{{ berita.judul }}</h3>
-                        <p class="text-sm text-slate-600 mt-2 line-clamp-2">{{ berita.isi }}</p>
-                    </div>
-                </article>
-                {% empty %}
-                <div class="bg-white rounded-xl p-6 border border-slate-200 text-sm text-slate-500">
-                    Belum ada publikasi berita terbaru.
+                <div class="border-top border-white border-opacity-25 pt-3">
+                    <p class="fw-bold mb-0">K.H. Ahmad Dahlan</p>
+                    <small class="opacity-75">Pendiri Persyarikatan Muhammadiyah</small>
                 </div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- Kolom Daftar PRM (1/3) -->
-        <div id="prm">
-            <h2 class="text-2xl font-bold text-[#0F2537] mb-6">Pimpinan Ranting (PRM)</h2>
-            <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200 divide-y divide-slate-100">
-                {% for ranting in daftar_prm %}
-                <div class="py-3 first:pt-0 last:pb-0">
-                    <h4 class="font-bold text-[#0F2537] text-sm">PRM {{ ranting.nama_desa }}</h4>
-                    <p class="text-xs text-[#059669] font-medium mt-0.5">Ketua: {{ ranting.ketua_ranting }}</p>
-                    <p class="text-xs text-slate-500 mt-1">{{ ranting.alamat_sekretariat }}</p>
-                </div>
-                {% empty %}
-                <p class="text-sm text-slate-500">Data Pimpinan Ranting belum tersedia.</p>
-                {% endfor %}
             </div>
         </div>
     </div>
-</section>
-{% endblock %}
+</div>
 
-{% block extra_js %}
-<script>
-    // 1. LOGIKA HERO SWITCHER (PLAN A / PLAN B / KEDUANYA)
-    function switchHeroPlan(mode) {
-        const cardA = document.getElementById('card-plan-a');
-        const cardB = document.getElementById('card-plan-b');
-        const grid = document.getElementById('hero-cards-grid');
+<!-- 2. PILAR GERAKAN PCM KARTASURA: 4 kartu ringkasan bidang dakwah -->
+<div class="row g-3 mb-5">
+    <!-- Pilar 1: Pendidikan -->
+    <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+            <h6 class="fw-bold mb-1" style="color: var(--pcm-navy);">Pendidikan</h6>
+            <small class="text-muted">Sekolah & Madrasah Unggulan</small>
+        </div>
+    </div>
+    <!-- Pilar 2: Kesehatan -->
+    <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+            <h6 class="fw-bold mb-1" style="color: var(--pcm-hijau);">Kesehatan</h6>
+            <small class="text-muted">Layanan Kesehatan Umat</small>
+        </div>
+    </div>
+    <!-- Pilar 3: Sosial & ZIS -->
+    <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+            <h6 class="fw-bold mb-1" style="color: var(--pcm-navy);">Sosial & ZIS</h6>
+            <small class="text-muted">Lazismu & Santunan Sosial</small>
+        </div>
+    </div>
+    <!-- Pilar 4: Dakwah Ranting -->
+    <div class="col-6 col-md-3">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+            <h6 class="fw-bold mb-1" style="color: var(--pcm-hijau);">Dakwah Ranting</h6>
+            <small class="text-muted">Jaringan PRM Se-Kartasura</small>
+        </div>
+    </div>
+</div>
 
-        document.querySelectorAll('.hero-toggle-btn').forEach(btn => {
-            btn.classList.remove('bg-[#059669]', 'text-white', 'shadow-sm');
-            btn.classList.add('text-slate-600');
-        });
-
-        const activeBtn = document.getElementById(`btn-${mode}`);
-        if (activeBtn) {
-            activeBtn.classList.add('bg-[#059669]', 'text-white', 'shadow-sm');
-            activeBtn.classList.remove('text-slate-600');
-        }
-
-        if (mode === 'planA') {
-            cardA.classList.remove('hidden');
-            cardB.classList.add('hidden');
-            grid.classList.remove('lg:grid-cols-2');
-            grid.classList.add('grid-cols-1');
-        } else if (mode === 'planB') {
-            cardA.classList.add('hidden');
-            cardB.classList.remove('hidden');
-            grid.classList.remove('lg:grid-cols-2');
-            grid.classList.add('grid-cols-1');
-        } else {
-            cardA.classList.remove('hidden');
-            cardB.classList.remove('hidden');
-            grid.classList.remove('grid-cols-1');
-            grid.classList.add('lg:grid-cols-2');
-        }
-    }
-
-    // 2. LOGIKA TAB FILTER DIREKTORI AUM
-    function filterAUM(kategori, clickedBtn) {
-        document.querySelectorAll('.aum-tab-btn').forEach(btn => {
-            btn.classList.remove('bg-[#059669]', 'text-white', 'shadow-sm');
-            btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-        });
-
-        clickedBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-        clickedBtn.classList.add('bg-[#059669]', 'text-white', 'shadow-sm');
-
-        const cards = document.querySelectorAll('.aum-card');
-        cards.forEach(card => {
-            const cardKategori = card.getAttribute('data-kategori');
-            if (kategori === 'ALL' || cardKategori === kategori) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-    }
-</script>
-{% endblock %}
+<!-- 3. SAMBUTAN & SEKILAS PROFIL: Kartu dengan aksen garis hijau di sisi kiri -->
+<div class="card border-0 shadow-sm rounded-4 mb-5 bg-white overflow-hidden">
+    <div class="row g-0">
+        <!-- Garis vertikal dekoratif berwarna hijau -->
+        <div class="col-auto" style="width: 6px; background-color: var(--pcm-hijau);"></div>
+        <div class="col">
+            <div class="card-body p-4 p-md-5">
+                <span class="text-uppercase fw-bold small" style="color: var(--pcm-hijau); letter-spacing: 1px;">Selayang Pandang</span>
+                <h2 class="fw-bold mt-1 mb-3" style="color: var(--pcm-navy);">Sambutan & Sekilas Profil</h2>
+                
+                <!-- Menampilkan ringkasan sejarah/profil dari database atau teks default -->
+                <p class="text-secondary fs-6 lh-lg mb-3
