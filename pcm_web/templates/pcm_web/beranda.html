@@ -7,32 +7,114 @@
 <!-- Memulai blok konten utama yang akan disisipkan ke dalam tag <main> di base.html -->
 {% block content %}
 
-<!-- HERO SECTION: Banner utama di bagian atas halaman dengan latar warna Navy -->
-<div class="p-4 p-md-5 mb-5 rounded-4 shadow-sm text-white" style="background-color: var(--pcm-navy);">
-    <div class="row align-items-center g-4">
+<!-- Gaya CSS khusus halaman Beranda untuk efek modern, animasi hover, dan gradien -->
+<style>
+    .pcm-hero {
+        background: linear-gradient(135deg, var(--pcm-navy) 0%, #163a5f 60%, var(--pcm-hijau) 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .pcm-hero::before {
+        content: "";
+        position: absolute;
+        top: -80px;
+        right: -80px;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .pcm-hero::after {
+        content: "";
+        position: absolute;
+        bottom: -100px;
+        left: -60px;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.07) 0%, transparent 70%);
+        pointer-events: none;
+    }
+    .pcm-btn-primary {
+        background-color: var(--pcm-hijau);
+        color: var(--pcm-putih, #ffffff);
+        border: 2px solid var(--pcm-hijau);
+        transition: all 0.25s ease;
+    }
+    .pcm-btn-primary:hover {
+        filter: brightness(1.08);
+        color: var(--pcm-putih, #ffffff);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+    .pcm-btn-outline {
+        border: 2px solid rgba(255, 255, 255, 0.65);
+        color: var(--pcm-putih, #ffffff);
+        transition: all 0.25s ease;
+    }
+    .pcm-btn-outline:hover {
+        background-color: var(--pcm-putih, #ffffff);
+        color: var(--pcm-navy);
+        transform: translateY(-2px);
+    }
+    .pcm-card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .pcm-card-hover:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.09) !important;
+    }
+    .pcm-section-badge {
+        background-color: var(--pcm-cream, #f4f1ea);
+        color: var(--pcm-navy);
+        letter-spacing: 0.5px;
+    }
+    .pcm-avatar-ring {
+        width: 116px;
+        height: 116px;
+        padding: 4px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--pcm-hijau), var(--pcm-navy));
+    }
+    .pcm-welcome-card {
+        border-left: 5px solid var(--pcm-hijau) !important;
+    }
+</style>
+
+<!-- HERO SECTION: Banner utama dengan gradien modern Navy & Hijau -->
+<section class="pcm-hero p-4 p-md-5 mb-5 rounded-4 shadow text-white">
+    <div class="row align-items-center g-4 g-lg-5 position-relative" style="z-index: 1;">
         
-        <!-- Kolom Kiri: Berisi identitas organisasi, tagline, dan tombol navigasi cepat -->
+        <!-- Kolom Kiri: Identitas organisasi, tagline, dan tombol navigasi cepat -->
         <div class="col-lg-7">
-            <span class="badge mb-3 px-3 py-2" style="background-color: var(--pcm-hijau);">
+            <span class="badge rounded-pill mb-3 px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 shadow-sm" style="background-color: var(--pcm-hijau);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0l1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
+                    <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+                </svg>
                 Pimpinan Cabang Muhammadiyah Kartasura
             </span>
             
             <!-- Menampilkan nama organisasi dari database, atau teks bawaan (default) jika database masih kosong -->
-            <h1 class="display-5 fw-bold mb-3">
+            <h1 class="display-5 fw-bold mb-3 lh-sm">
                 {{ profil.nama_organisasi|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}
             </h1>
             
             <!-- Menampilkan tagline/motto PCM dari database atau teks default -->
-            <p class="lead mb-4" style="color: var(--pcm-cream);">
+            <p class="lead mb-4 fw-normal opacity-90" style="color: var(--pcm-cream);">
                 {{ profil.tagline|default:"Meneguhkan Dakwah Islam Berkemajuan untuk Masyarakat Kartasura yang Mencerahkan." }}
             </p>
             
             <!-- Tombol aksi menuju halaman Profil dan halaman Amal Usaha -->
-            <div class="d-flex flex-wrap gap-2">
-                <a href="/profil/" class="btn btn-lg fw-semibold text-white" style="background-color: var(--pcm-hijau);">
-                    Profil & Struktur Pimpinan
+            <div class="d-flex flex-wrap gap-3 pt-1">
+                <a href="/profil/" class="btn btn-lg rounded-3 px-4 fw-semibold pcm-btn-primary d-inline-flex align-items-center gap-2">
+                    <span>Profil & Struktur Pimpinan</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                    </svg>
                 </a>
-                <a href="/amal-usaha/" class="btn btn-outline-light btn-lg">
+                <a href="/amal-usaha/" class="btn btn-lg rounded-3 px-4 fw-semibold pcm-btn-outline">
                     Lihat Amal Usaha
                 </a>
             </div>
@@ -42,36 +124,58 @@
         <div class="col-lg-5 text-center">
             <!-- Mengecek apakah admin sudah mengunggah foto utama -->
             {% if profil.foto_utama %}
-                <img src="{{ profil.foto_utama.url }}" alt="Gedung Dakwah PCM Kartasura" class="img-fluid rounded-3 shadow">
+                <div class="p-2 rounded-4 d-inline-block" style="background: rgba(255, 255, 255, 0.12); backdrop-filter: blur(6px);">
+                    <img src="{{ profil.foto_utama.url }}" alt="Gedung Dakwah PCM Kartasura" class="img-fluid rounded-3 shadow-lg" style="max-height: 340px; object-fit: cover;">
+                </div>
             {% else %}
-                <!-- Kotak pengganti (placeholder) jika foto belum diunggah -->
-                <div class="p-5 rounded-3 border border-light border-opacity-25" style="background-color: rgba(255,255,255,0.1);">
-                    <p class="mb-0 text-white-50">Foto Gedung Dakwah / Pengurus PCM Kartasura</p>
+                <!-- Kotak pengganti (placeholder) elegan jika foto belum diunggah -->
+                <div class="p-5 rounded-4 border border-light border-opacity-25 d-flex flex-column align-items-center justify-content-center shadow-sm" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(6px); min-height: 260px;">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 64px; height: 64px; background-color: rgba(255, 255, 255, 0.12);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="text-white-50" viewBox="0 0 16 16">
+                            <path d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                            <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                        </svg>
+                    </div>
+                    <p class="mb-0 text-white-50 fw-medium small">Foto Gedung Dakwah / Pengurus PCM Kartasura</p>
                 </div>
             {% endif %}
         </div>
     </div>
-</div>
+</section>
 
 <!-- SAMBUTAN & SEKILAS PROFIL: Kartu ringkasan informasi tentang PCM Kartasura -->
-<div class="card border-0 shadow-sm rounded-4 mb-5 bg-white">
+<section class="card border-0 shadow-sm rounded-4 mb-5 bg-white pcm-welcome-card">
     <div class="card-body p-4 p-md-5">
-        <h2 class="fw-bold mb-3" style="color: var(--pcm-navy);">Sambutan & Sekilas Profil</h2>
-        <hr style="border-color: var(--pcm-hijau); width: 80px; border-width: 3px; opacity: 1;">
-        
-        <!-- Menampilkan teks sejarah/sambutan dari database atau teks sambutan bawaan -->
-        <p class="text-secondary fs-5 lh-lg mb-0">
-            {{ profil.sejarah|default:"Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di website resmi Pimpinan Cabang Muhammadiyah (PCM) Kartasura. Portal ini menjadi pusat informasi dakwah, program kerja, serta berbagai Amal Usaha Muhammadiyah di wilayah Kartasura." }}
-        </p>
+        <div class="row align-items-center g-4">
+            <div class="col-lg-12">
+                <span class="badge rounded-pill px-3 py-2 mb-2 fw-semibold pcm-section-badge">
+                    TENTANG KAMI
+                </span>
+                <h2 class="fw-bold mb-2" style="color: var(--pcm-navy);">Sambutan & Sekilas Profil</h2>
+                <div class="rounded-pill mb-4" style="background-color: var(--pcm-hijau); width: 70px; height: 4px;"></div>
+                
+                <!-- Menampilkan teks sejarah/sambutan dari database atau teks sambutan bawaan -->
+                <p class="text-secondary fs-5 lh-lg mb-0">
+                    {{ profil.sejarah|default:"Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di website resmi Pimpinan Cabang Muhammadiyah (PCM) Kartasura. Portal ini menjadi pusat informasi dakwah, program kerja, serta berbagai Amal Usaha Muhammadiyah di wilayah Kartasura." }}
+                </p>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 
 <!-- PREVIEW PIMPINAN HARIAN: Menampilkan maksimal 4 pengurus inti di halaman depan -->
-<div class="mb-4">
+<section class="mb-4">
     <!-- Header bagian Pimpinan Harian beserta tombol menuju halaman profil lengkap -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold mb-0" style="color: var(--pcm-navy);">Pimpinan Harian</h3>
-        <a href="/profil/" class="btn btn-sm text-white px-3" style="background-color: var(--pcm-hijau);">Lihat Semua &rarr;</a>
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <div>
+            <span class="badge rounded-pill px-3 py-2 mb-2 fw-semibold pcm-section-badge">
+                STRUKTUR ORGANISASI
+            </span>
+            <h3 class="fw-bold mb-0" style="color: var(--pcm-navy);">Pimpinan Harian</h3>
+        </div>
+        <a href="/profil/" class="btn rounded-pill text-white px-4 py-2 fw-semibold shadow-sm pcm-btn-primary">
+            Lihat Semua &rarr;
+        </a>
     </div>
 
     <!-- Grid daftar kartu pimpinan -->
@@ -79,33 +183,41 @@
         <!-- Perulangan (looping) untuk menampilkan setiap data pimpinan dari variabel pimpinan_inti -->
         {% for item in pimpinan_inti %}
         <div class="col-sm-6 col-md-3">
-            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white">
-                
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white pcm-card-hover position-relative overflow-hidden">
+                <!-- Garis aksen atas kartu -->
+                <div class="position-absolute top-0 start-0 w-100" style="height: 4px; background: linear-gradient(90deg, var(--pcm-navy), var(--pcm-hijau));"></div>
+
                 <!-- Menampilkan foto profil pimpinan jika tersedia, atau inisial huruf pertama jika kosong -->
-                {% if item.foto %}
-                    <img src="{{ item.foto.url }}" alt="{{ item.nama }}" class="rounded-circle mx-auto mb-3 object-fit-cover" style="width: 110px; height: 110px; border: 3px solid var(--pcm-hijau);">
-                {% else %}
-                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center text-white fw-bold fs-4" style="width: 110px; height: 110px; background-color: var(--pcm-navy);">
-                        {{ item.nama|slice:":1" }}
-                    </div>
-                {% endif %}
+                <div class="pcm-avatar-ring mx-auto mb-3 mt-2 shadow-sm">
+                    {% if item.foto %}
+                        <img src="{{ item.foto.url }}" alt="{{ item.nama }}" class="rounded-circle w-100 h-100 object-fit-cover bg-white">
+                    {% else %}
+                        <div class="rounded-circle w-100 h-100 d-flex align-items-center justify-content-center text-white fw-bold fs-3" style="background-color: var(--pcm-navy);">
+                            {{ item.nama|slice:":1" }}
+                        </div>
+                    {% endif %}
+                </div>
                 
                 <!-- Menampilkan nama lengkap dan jabatan pimpinan -->
-                <h5 class="fw-bold mb-1" style="color: var(--pcm-navy);">{{ item.nama }}</h5>
-                <p class="small fw-semibold mb-0" style="color: var(--pcm-hijau);">{{ item.jabatan }}</p>
+                <h5 class="fw-bold mb-2" style="color: var(--pcm-navy);">{{ item.nama }}</h5>
+                <div class="mt-auto pt-1">
+                    <span class="badge rounded-pill px-3 py-2 fw-semibold" style="background-color: var(--pcm-cream, #f4f1ea); color: var(--pcm-hijau);">
+                        {{ item.jabatan }}
+                    </span>
+                </div>
             </div>
         </div>
         
         <!-- Pesan pemberitahuan jika tabel Pimpinan di database masih kosong -->
         {% empty %}
         <div class="col-12">
-            <div class="alert alert-light border text-muted">
-                Data pimpinan belum diinput. Silakan tambahkan melalui panel Admin Django.
+            <div class="alert alert-light border rounded-4 p-4 text-center text-muted shadow-sm mb-0">
+                <p class="mb-0 fw-medium">Data pimpinan belum diinput. Silakan tambahkan melalui panel Admin Django.</p>
             </div>
         </div>
         {% endfor %}
     </div>
-</div>
+</section>
 
 <!-- Menutup blok konten utama -->
 {% endblock %}
