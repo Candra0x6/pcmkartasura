@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.db.models import Q
-from .models import Berita
+from .models import Berita, Agenda, PesanMasuk
 
 def cari_berita(request):
     # Mengambil kata kunci dari URL (misal: ?q=pengajian)
@@ -15,3 +16,32 @@ def cari_berita(request):
         )
         
     return render(request, 'pcm_web/cari.html', {'query': query, 'hasil': hasil})
+
+
+
+def halaman_agenda(request):
+    # Mengambil semua data agenda dari database
+    daftar_agenda = Agenda.objects.all()
+    return render(request, 'pcm_web/agenda.html', {'daftar_agenda': daftar_agenda})
+
+def halaman_kontak(request):
+    if request.method == 'POST':
+        # Mengambil data dari form HTML
+        nama_pengirim = request.POST.get('nama')
+        email_pengirim = request.POST.get('email')
+        subjek_pesan = request.POST.get('subjek') # Tambahan field subjek
+        isi_pesan = request.POST.get('pesan')
+        
+        # Menyimpan data ke dalam database PesanMasuk
+        PesanMasuk.objects.create(
+            nama=nama_pengirim, 
+            email=email_pengirim, 
+            subjek=subjek_pesan, # Tambahan field subjek
+            pesan=isi_pesan
+        )
+        
+        # Memunculkan notifikasi sukses
+        messages.success(request, 'Terima kasih, pesan Anda berhasil dikirim!')
+        return redirect('kontak')
+
+    return render(request, 'pcm_web/kontak.html')
