@@ -1,91 +1,43 @@
-<!-- Mewarisi kerangka tata letak utama (Navbar, Jadwal Shalat, dan Footer) dari base.html -->
 {% extends 'pcm_web/base.html' %}
 
-<!-- Mengatur judul tab browser khusus untuk halaman Beranda -->
 {% block title %}Beranda - PCM Kartasura{% endblock %}
 
-<!-- Memulai blok konten utama yang akan dimasukkan ke dalam <main> di base.html -->
 {% block content %}
-
-<!-- CSS Kustom: Memperhalus tampilan gradasi, bayangan kartu, dan tombol tanpa mengubah base.html -->
-<style>
-    /* Efek latar belakang gradasi Navy elegan untuk bagian Hero */
-    .hero-pcm {
-        background: linear-gradient(135deg, #000066 0%, #000080 60%, #103778 100%);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        position: relative;
-        overflow: hidden;
-    }
-    /* Animasi kartu terangkat halus saat disentuh kursor (hover) */
-    .card-hover {
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .card-hover:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 12px 24px rgba(0, 0, 128, 0.12) !important;
-    }
-    /* Gaya tombol hijau khas Muhammadiyah beserta efek hover */
-    .btn-pcm-green {
-        background-color: var(--pcm-hijau);
-        color: #ffffff;
-        border: none;
-        transition: all 0.2s ease;
-    }
-    .btn-pcm-green:hover {
-        background-color: #236b43;
-        color: #ffffff;
-        transform: translateY(-2px);
-    }
-    /* Penanda warna aktif untuk tombol switcher Sambutan / Motto Dakwah */
-    .hero-toggle-btn.active {
-        background-color: var(--pcm-hijau) !important;
-        color: #ffffff !important;
-        border-color: var(--pcm-hijau) !important;
-    }
-</style>
-
 <!-- 1. HERO SECTION & SWITCHER SAMBUTAN / MOTTO DAKWAH -->
-<div class="hero-pcm p-4 p-md-5 mb-5 rounded-4 shadow text-white">
-    
-    <!-- Baris Atas Hero: Lencana identitas dan tombol pengatur tampilan kartu -->
+<div class="p-4 p-md-5 mb-5 rounded-4 shadow text-white" style="background: linear-gradient(135deg, #000066 0%, #000080 60%, #103778 100%);">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <span class="badge px-3 py-2 rounded-pill" style="background-color: var(--pcm-hijau);">
             Portal Resmi Persyarikatan
         </span>
 
-        <!-- Grup tombol interaktif untuk memilih tampilan Sambutan, Motto, atau Keduanya -->
+        <!-- Tombol Toggle Tampilan -->
         <div class="btn-group btn-group-sm bg-white p-1 rounded-3 shadow-sm" role="group">
-            <button type="button" onclick="switchHeroPlan('planA')" id="btn-planA" class="btn btn-light hero-toggle-btn fw-semibold">
+            <button type="button" onclick="switchHeroPlan('planA')" id="btn-planA" class="btn btn-light fw-semibold">
                 Sambutan
             </button>
-            <button type="button" onclick="switchHeroPlan('planB')" id="btn-planB" class="btn btn-light hero-toggle-btn fw-semibold">
+            <button type="button" onclick="switchHeroPlan('planB')" id="btn-planB" class="btn btn-light fw-semibold">
                 Motto Dakwah
             </button>
-            <button type="button" onclick="switchHeroPlan('both')" id="btn-both" class="btn btn-light hero-toggle-btn active fw-semibold">
+            <button type="button" onclick="switchHeroPlan('both')" id="btn-both" class="btn text-white fw-semibold" style="background-color: var(--pcm-hijau);">
                 Keduanya
             </button>
         </div>
     </div>
 
-    <!-- Baris Konten Hero: Terbagi menjadi 2 kartu berdampingan -->
     <div class="row g-4 align-items-stretch">
-        
-        <!-- Kartu Kiri (Plan A): Identitas organisasi, tagline, dan tombol navigasi utama -->
+        <!-- Kartu Kiri: Identitas & Sambutan -->
         <div class="col-lg-7" id="card-plan-a">
             <div class="h-100 p-4 rounded-4 d-flex flex-column justify-content-between" style="background-color: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);">
                 <div>
-                    <!-- Menampilkan nama organisasi dari database atau teks default jika belum diisi -->
                     <h1 class="display-6 fw-bold mb-3">
                         {{ profil.nama_organisasi|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}
                     </h1>
-                    <!-- Menampilkan tagline dari database atau teks default -->
                     <p class="lead mb-4" style="color: var(--pcm-cream); font-size: 1.05rem;">
                         {{ profil.tagline|default:"Meneguhkan Dakwah Islam Berkemajuan untuk Masyarakat Kartasura yang Mencerahkan." }}
                     </p>
                 </div>
-                <!-- Tombol pintasan menuju halaman Profil dan Amal Usaha -->
                 <div class="d-flex flex-wrap gap-2 pt-2">
-                    <a href="/profil/" class="btn btn-pcm-green px-4 py-2 fw-semibold">
+                    <a href="/profil/" class="btn px-4 py-2 fw-semibold text-white" style="background-color: var(--pcm-hijau);">
                         Profil & Struktur Pimpinan
                     </a>
                     <a href="/amal-usaha/" class="btn btn-outline-light px-4 py-2 fw-semibold">
@@ -95,7 +47,7 @@
             </div>
         </div>
 
-        <!-- Kartu Kanan (Plan B): Kutipan mutiara dakwah K.H. Ahmad Dahlan -->
+        <!-- Kartu Kanan: Mutiara Dakwah -->
         <div class="col-lg-5" id="card-plan-b">
             <div class="h-100 p-4 rounded-4 d-flex flex-column justify-content-between text-white" style="background-color: var(--pcm-hijau);">
                 <div>
@@ -113,47 +65,116 @@
     </div>
 </div>
 
-<!-- 2. PILAR GERAKAN PCM KARTASURA: 4 kartu ringkasan bidang dakwah -->
+<!-- 2. PILAR GERAKAN PCM KARTASURA -->
 <div class="row g-3 mb-5">
-    <!-- Pilar 1: Pendidikan -->
     <div class="col-6 col-md-3">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white">
             <h6 class="fw-bold mb-1" style="color: var(--pcm-navy);">Pendidikan</h6>
             <small class="text-muted">Sekolah & Madrasah Unggulan</small>
         </div>
     </div>
-    <!-- Pilar 2: Kesehatan -->
     <div class="col-6 col-md-3">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white">
             <h6 class="fw-bold mb-1" style="color: var(--pcm-hijau);">Kesehatan</h6>
             <small class="text-muted">Layanan Kesehatan Umat</small>
         </div>
     </div>
-    <!-- Pilar 3: Sosial & ZIS -->
     <div class="col-6 col-md-3">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white">
             <h6 class="fw-bold mb-1" style="color: var(--pcm-navy);">Sosial & ZIS</h6>
             <small class="text-muted">Lazismu & Santunan Sosial</small>
         </div>
     </div>
-    <!-- Pilar 4: Dakwah Ranting -->
     <div class="col-6 col-md-3">
-        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white card-hover">
+        <div class="card h-100 border-0 shadow-sm rounded-4 p-3 bg-white">
             <h6 class="fw-bold mb-1" style="color: var(--pcm-hijau);">Dakwah Ranting</h6>
             <small class="text-muted">Jaringan PRM Se-Kartasura</small>
         </div>
     </div>
 </div>
 
-<!-- 3. SAMBUTAN & SEKILAS PROFIL: Kartu dengan aksen garis hijau di sisi kiri -->
+<!-- 3. SAMBUTAN & SEKILAS PROFIL -->
 <div class="card border-0 shadow-sm rounded-4 mb-5 bg-white overflow-hidden">
     <div class="row g-0">
-        <!-- Garis vertikal dekoratif berwarna hijau -->
         <div class="col-auto" style="width: 6px; background-color: var(--pcm-hijau);"></div>
         <div class="col">
             <div class="card-body p-4 p-md-5">
                 <span class="text-uppercase fw-bold small" style="color: var(--pcm-hijau); letter-spacing: 1px;">Selayang Pandang</span>
                 <h2 class="fw-bold mt-1 mb-3" style="color: var(--pcm-navy);">Sambutan & Sekilas Profil</h2>
-                
-                <!-- Menampilkan ringkasan sejarah/profil dari database atau teks default -->
-                <p class="text-secondary fs-6 lh-lg mb-3
+                <p class="text-secondary fs-6 lh-lg mb-3">
+                    {{ profil.sejarah|default:"Assalamu'alaikum Warahmatullahi Wabarakatuh. Selamat datang di portal informasi Pimpinan Cabang Muhammadiyah (PCM) Kartasura. Website ini hadir sebagai sarana silaturahmi, informasi dakwah, serta pengenalan berbagai Amal Usaha Muhammadiyah di wilayah Kartasura." }}
+                </p>
+                <a href="/profil/" class="text-decoration-none fw-semibold" style="color: var(--pcm-navy);">
+                    Baca sejarah dan visi misi selengkapnya &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 4. PREVIEW PIMPINAN HARIAN -->
+<div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <span class="text-uppercase fw-bold small" style="color: var(--pcm-hijau);">Kepengurusan</span>
+            <h3 class="fw-bold mb-0" style="color: var(--pcm-navy);">Pimpinan Harian</h3>
+        </div>
+        <a href="/profil/" class="btn btn-sm px-3 py-2 fw-semibold text-white" style="background-color: var(--pcm-hijau);">
+            Lihat Semua Struktur &rarr;
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for item in pimpinan_inti %}
+        <div class="col-sm-6 col-md-3">
+            <div class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 bg-white">
+                {% if item.foto %}
+                    <img src="{{ item.foto.url }}" alt="{{ item.nama }}" class="rounded-circle mx-auto mb-3 object-fit-cover" style="width: 110px; height: 110px; border: 3px solid var(--pcm-hijau);">
+                {% else %}
+                    <div class="rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center text-white fw-bold fs-4" style="width: 110px; height: 110px; background-color: var(--pcm-navy);">
+                        {{ item.nama|slice:":1" }}
+                    </div>
+                {% endif %}
+                <h5 class="fw-bold mb-1" style="color: var(--pcm-navy);">{{ item.nama }}</h5>
+                <p class="small fw-semibold mb-0" style="color: var(--pcm-hijau);">{{ item.jabatan }}</p>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center text-muted">
+                <p class="mb-0">Data pimpinan belum diinput. Silakan tambahkan melalui panel <strong>/admin/</strong>.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function switchHeroPlan(mode) {
+        const cardA = document.getElementById('card-plan-a');
+        const cardB = document.getElementById('card-plan-b');
+        const buttons = ['planA', 'planB', 'both'];
+
+        buttons.forEach(function(id) {
+            const btn = document.getElementById('btn-' + id);
+            btn.className = 'btn btn-light fw-semibold';
+            btn.style.backgroundColor = '';
+        });
+
+        const activeBtn = document.getElementById('btn-' + mode);
+        activeBtn.className = 'btn text-white fw-semibold';
+        activeBtn.style.backgroundColor = 'var(--pcm-hijau)';
+
+        if (mode === 'planA') {
+            cardA.className = 'col-12';
+            cardB.className = 'd-none';
+        } else if (mode === 'planB') {
+            cardB.className = 'col-12';
+            cardA.className = 'd-none';
+        } else {
+            cardA.className = 'col-lg-7';
+            cardB.className = 'col-lg-5';
+        }
+    }
+</script>
+{% endblock %}
