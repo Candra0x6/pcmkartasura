@@ -30,6 +30,30 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    .btn-filter-aum {
+        background-color: var(--pcm-putih);
+        color: var(--pcm-navy);
+        border: 1.5px solid var(--pcm-navy);
+        transition: all 0.25s ease;
+    }
+    .btn-filter-aum:hover {
+        background-color: rgba(46, 139, 87, 0.12);
+        border-color: var(--pcm-hijau);
+        color: var(--pcm-hijau);
+    }
+    .btn-filter-aum.active {
+        background-color: var(--pcm-hijau);
+        border-color: var(--pcm-hijau);
+        color: var(--pcm-putih);
+        box-shadow: 0 0.25rem 0.6rem rgba(46, 139, 87, 0.35);
+    }
+    .aum-item {
+        transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+    .aum-item.aum-fade-out {
+        opacity: 0;
+        transform: scale(0.96) translateY(8px);
+    }
 </style>
 
 <!-- Header Banner -->
@@ -49,10 +73,29 @@
     </div>
 </div>
 
+<!-- Pill-Tabs Filter Kategori -->
+<div class="d-flex flex-wrap gap-2 mb-4" id="aum-filter-tabs" role="tablist" aria-label="Filter Kategori AUM">
+    <button type="button" class="btn rounded-pill px-4 py-2 fw-semibold btn-filter-aum active" data-filter="semua">
+        Semua
+    </button>
+    <button type="button" class="btn rounded-pill px-4 py-2 fw-semibold btn-filter-aum" data-filter="pendidikan">
+        Pendidikan
+    </button>
+    <button type="button" class="btn rounded-pill px-4 py-2 fw-semibold btn-filter-aum" data-filter="kesehatan">
+        Kesehatan
+    </button>
+    <button type="button" class="btn rounded-pill px-4 py-2 fw-semibold btn-filter-aum" data-filter="sosial">
+        Sosial
+    </button>
+    <button type="button" class="btn rounded-pill px-4 py-2 fw-semibold btn-filter-aum" data-filter="ekonomi">
+        Ekonomi
+    </button>
+</div>
+
 <!-- Grid Card AUM -->
-<div class="row g-4">
+<div class="row g-4" id="aum-grid">
     {% for aum in daftar_aum %}
-    <div class="col-12 col-md-6 col-lg-4">
+    <div class="col-12 col-md-6 col-lg-4 aum-item" data-bidang="{{ aum.bidang }}">
         <div class="card h-100 border-0 shadow-sm rounded-3 overflow-hidden aum-card" style="background-color: var(--pcm-putih);">
             <!-- Bagian Atas: Foto atau Ilustrasi Header Bergradien -->
             {% if aum.gambar %}
@@ -91,11 +134,74 @@
         </div>
     </div>
     {% empty %}
-    <div class="col-12">
+    <div class="col-12" id="aum-empty-initial">
         <div class="card border-0 shadow-sm rounded-3 p-5 text-center" style="background-color: var(--pcm-putih);">
-            <p class="text-muted mb-0">Belum ada data Amal Usaha Muhammadiyah (AUM) yang tersedia.</p>
+            <h5 class="fw-bold mb-2" style="color: var(--pcm-navy);">Belum Ada Data Amal Usaha</h5>
+            <p class="text-muted mb-0">Belum ada data Amal Usaha Muhammadiyah (AUM) yang terdaftar saat ini.</p>
         </div>
     </div>
     {% endfor %}
+
+    <!-- Empty State untuk Filter Kategori -->
+    <div class="col-12 d-none" id="aum-empty-filter">
+        <div class="card border-0 shadow-sm rounded-3 p-5 text-center" style="background-color: var(--pcm-putih);">
+            <h5 class="fw-bold mb-2" style="color: var(--pcm-navy);">Kategori Belum Memiliki Data</h5>
+            <p class="text-muted mb-0" id="aum-empty-filter-text">
+                Belum ada Amal Usaha Muhammadiyah (AUM) pada kategori ini.
+            </p>
+        </div>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterButtons = document.querySelectorAll('#aum-filter-tabs .btn-filter-aum');
+        const aumItems = document.querySelectorAll('#aum-grid .aum-item');
+        const emptyFilterEl = document.getElementById('aum-empty-filter');
+        const emptyFilterText = document.getElementById('aum-empty-filter-text');
+
+        filterButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                const selectedCategory = this.getAttribute('data-filter');
+                const categoryLabel = this.textContent.trim();
+
+                // Perbarui status tombol aktif
+                filterButtons.forEach(function (btn) {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                if (aumItems.length === 0) {
+                    return;
+                }
+
+                let visibleCount = 0;
+
+                aumItems.forEach(function (item) {
+                    const itemCategory = item.getAttribute('data-bidang');
+                    const isMatch = (selectedCategory === 'semua' || itemCategory === selectedCategory);
+
+                    if (isMatch) {
+                        visibleCount++;
+                        item.classList.remove('d-none');
+                        // Trigger reflow agar animasi transisi berjalan mulus
+                        void item.offsetWidth;
+                        item.classList.remove('aum-fade-out');
+                    } else {
+                        item.classList.add('aum-fade-out');
+                        item.classList.add('d-none');
+                    }
+                });
+
+                // Tampilkan atau sembunyikan pesan empty state kategori
+                if (visibleCount === 0) {
+                    emptyFilterText.textContent = 'Belum ada data Amal Usaha Muhammadiyah (AUM) untuk kategori "' + categoryLabel + '".';
+                    emptyFilterEl.classList.remove('d-none');
+                } else {
+                    emptyFilterEl.classList.add('d-none');
+                }
+            });
+        });
+    });
+</script>
 {% endblock %}
