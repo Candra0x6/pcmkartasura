@@ -1,0 +1,22 @@
+{% extends 'pcm_web/base.html' %}
+
+{% block title %}Amal Usaha Muhammadiyah (AUM) - PCM Kartasura{% endblock %}
+
+{% block content %}
+<!-- Header Banner -->
+<div class="card border-0 shadow-sm rounded-4 mb-4" style="background-color: var(--pcm-putih); border-left: 6px solid var(--pcm-hijau) !important;">
+    <div class="card-body p-4 p-md-5 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <div>
+            <h2 class="fw-bold mb-2" style="color: var(--pcm-navy);">Amal Usaha Muhammadiyah (AUM)</h2>
+            <p class="text-muted mb-0">
+                Daftar lembaga dan layanan Amal Usaha di bidang pendidikan, kesehatan, sosial, dan ekonomi di lingkungan Pimpinan Cabang Muhammadiyah Kartasura.
+            </p>
+        </div>
+        <div class="flex-shrink-0">
+            <a href="{% url 'ranting' %}" class="btn px-4 py-2 fw-semibold rounded-pill shadow-sm text-white" style="background-color: var(--pcm-hijau);">
+                Lihat Daftar Ranting &rarr;
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
