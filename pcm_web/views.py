@@ -47,9 +47,37 @@ def halaman_kontak(request):
     return render(request, 'pcm_web/kontak.html')
 
 def halaman_amal_usaha(request):
-    # Mengambil semua data amal usaha dari database
-    daftar_amal_usaha = AmalUsaha.objects.all()
-    return render(request, 'pcm_web/amal_usaha.html', {'daftar_amal_usaha': daftar_amal_usaha})
+    kategori = request.GET.get('kategori', '')
+
+    # Pemetaan parameter kategori URL ke (field bidang model AmalUsaha, label judul kategori)
+    peta_kategori = {
+        'klinik': ('kesehatan', 'Klinik & Balai Pengobatan'),
+        'lazismu': ('sosial', 'LazisMu'),
+        'panti-asuhan': ('sosial', 'Panti Asuhan'),
+        'pondok-pesantren': ('pendidikan', 'Pondok Pesantren'),
+        'rumah-sakit': ('kesehatan', 'Rumah Sakit'),
+        'sekolah': ('pendidikan', 'Sekolah / Madrasah'),
+        'toko': ('ekonomi', 'Toko'),
+    }
+
+    if kategori in peta_kategori:
+        bidang_filter, nama_kategori = peta_kategori[kategori]
+        daftar_aum = AmalUsaha.objects.filter(bidang=bidang_filter).order_by('nama')
+        judul_kategori = f"Amal Usaha Muhammadiyah/'Aisyiyah - {nama_kategori}"
+    else:
+        bidang_filter = ''
+        nama_kategori = "Amal Usaha Muhammadiyah/'Aisyiyah"
+        daftar_aum = AmalUsaha.objects.all().order_by('nama')
+        judul_kategori = "Amal Usaha Muhammadiyah/'Aisyiyah"
+
+    context = {
+        'daftar_aum': daftar_aum,
+        'kategori': kategori,
+        'bidang_filter': bidang_filter,
+        'nama_kategori': nama_kategori,
+        'judul_kategori': judul_kategori,
+    }
+    return render(request, 'pcm_web/amal_usaha.html', context)
 
 def halaman_ranting(request):
     # Mengambil semua data ranting diurutkan berdasarkan nama_ranting
