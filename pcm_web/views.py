@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Q
-from .models import Berita, Agenda, PesanMasuk
+from .models import Berita, Agenda, PesanMasuk, AmalUsaha
 
 def cari_berita(request):
     # Mengambil kata kunci dari URL (misal: ?q=pengajian)
@@ -45,3 +45,8 @@ def halaman_kontak(request):
         return redirect('kontak')
 
     return render(request, 'pcm_web/kontak.html')
+
+def halaman_amal_usaha(request):
+    # Mengambil semua data amal usaha dari database
+    daftar_amal_usaha = AmalUsaha.objects.all()
+    return render(request, 'pcm_web/amal_usaha.html', {'daftar_amal_usaha': daftar_amal_usaha})
