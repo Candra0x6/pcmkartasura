@@ -2,8 +2,8 @@ from django import urls
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Q
-from .models import Berita, Agenda, PesanMasuk
-from .models import ProfilOrganisasi, Pimpinan
+from .models import (Berita, Agenda, PesanMasuk, ProfilOrganisasi, Pimpinan,
+                     ProfilCabang, StrukturPengurus, AUM, PRM, BeritaInformasi, PanitiaKegiatan)
 
 def cari_berita(request):
     # Mengambil kata kunci dari URL (misal: ?q=pengajian)
@@ -55,12 +55,32 @@ def beranda(request):
     # Mengambil maksimal 4 data pimpinan teratas untuk ditampilkan sebagai preview di beranda
     pimpinan_inti = Pimpinan.objects.all()[:4]
     # Mengemas data ke dalam dictionary context untuk dikirim ke template HTML
+    profil_cabang = ProfilCabang.objects.first()
     context = {
         'profil': profil,
+        'profil_cabang': profil_cabang,
         'pimpinan_inti': pimpinan_inti,
+        'berita_terbaru': BeritaInformasi.objects.all()[:3],
+        'daftar_aum': AUM.objects.all(),
+        'pengurus': StrukturPengurus.objects.all()[:4],
+        'daftar_prm': PRM.objects.all(),
+        'kategori_aum': [choice[0] for choice in AUM.KATEGORI_CHOICES],
     }
     # Merender halaman beranda.html beserta data dari context
     return render(request, 'pcm_web/beranda.html', context)
+
+
+def dashboard_panitia(request):
+    tugas = PanitiaKegiatan.objects.all()
+    total = tugas.count()
+    selesai = tugas.filter(tugas_selesai=True).count()
+    persentase = round(selesai * 100 / total) if total else 0
+    return render(request, 'pcm_web/dashboard_panitia.html', {
+        'statistik_panitia': tugas,
+        'total_tugas': total,
+        'tugas_selesai': selesai,
+        'persentase_kesiapan': persentase,
+    })
 
 # View untuk menampilkan halaman Profil PCM dan Struktur Pimpinan lengkap
 def profil_pcm(request):
