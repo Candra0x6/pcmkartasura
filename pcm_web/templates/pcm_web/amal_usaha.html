@@ -1,0 +1,287 @@
+{% extends 'pcm_web/base.html' %}
+
+{% block title %}{{ judul_kategori|default:"Amal Usaha Muhammadiyah/'Aisyiyah" }} - PCM Kartasura{% endblock %}
+
+{% block content %}
+<style>
+    /* Bar Pencarian Terpusat Menyatu */
+    .aum-search-group {
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    .aum-search-input {
+        border: 1.5px solid #cbd5e1;
+        border-right: none;
+        padding: 0.65rem 1.15rem;
+        font-size: 0.95rem;
+    }
+
+    .aum-search-input:focus {
+        border-color: var(--pcm-navy);
+        box-shadow: none;
+    }
+
+    .btn-cari-aum {
+        background-color: var(--pcm-navy);
+        color: var(--pcm-putih);
+        border: 1.5px solid var(--pcm-navy);
+        padding: 0.65rem 1.6rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-cari-aum:hover {
+        background-color: #000066;
+        color: var(--pcm-putih);
+    }
+
+    /* Tabel Modern Ber-header Biru Navy */
+    .table-aum-wrapper {
+        border: 1px solid #e2e8f0;
+    }
+
+    .table-aum thead th {
+        background-color: var(--pcm-navy);
+        color: var(--pcm-putih);
+        font-weight: 600;
+        border: none;
+        padding: 0.95rem 1.25rem;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .table-aum tbody td {
+        padding: 0.95rem 1.25rem;
+        vertical-align: middle;
+        border-color: #eef2f6;
+        color: #334155;
+    }
+
+    .table-aum tbody tr.aum-row {
+        transition: background-color 0.18s ease;
+    }
+
+    .table-aum tbody tr.aum-row:hover {
+        background-color: rgba(46, 139, 87, 0.05);
+    }
+
+    .sortable-header {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .sortable-header:hover {
+        opacity: 0.9;
+    }
+
+    .sort-indicator {
+        font-size: 0.8rem;
+        margin-left: 0.35rem;
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    .sortable-header.desc .sort-indicator {
+        transform: rotate(180deg);
+    }
+</style>
+
+<!-- Kontainer Kartu Putih Besar -->
+<div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border">
+    <!-- Judul Besar di Tengah -->
+    <h2 class="fw-bold text-center mb-4" style="color: var(--pcm-navy);">
+        {{ judul_kategori|default:"Amal Usaha Muhammadiyah/'Aisyiyah" }}
+    </h2>
+
+    <!-- Bar Pencarian Terpusat (Input + Tombol Biru Navy "Cari" Menyatu) -->
+    <form id="aum-search-form" class="mb-4" onsubmit="return false;">
+        <div class="input-group aum-search-group shadow-sm rounded-3 overflow-hidden">
+            <input
+                type="search"
+                id="aum-search-input"
+                class="form-control aum-search-input border-0"
+                placeholder="Cari nama AUM, alamat, atau keterangan..."
+                aria-label="Cari nama AUM"
+            >
+            <button class="btn btn-cari-aum" type="submit" id="aum-search-btn">
+                Cari
+            </button>
+        </div>
+    </form>
+
+    <!-- Tabel Lebar Modern Ber-header Biru var(--pcm-navy) -->
+    <div class="table-aum-wrapper rounded-top-3 rounded-bottom-3 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover table-aum mb-0" id="aum-table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="sortable-header" id="sort-nama-aum" title="Klik untuk mengurutkan A-Z / Z-A">
+                            Nama AUM <span class="sort-indicator">&#9650;</span>
+                        </th>
+                        <th scope="col">Kategori / Bidang</th>
+                        <th scope="col">Alamat</th>
+                        <th scope="col">Keterangan</th>
+                    </tr>
+                </thead>
+                <tbody id="aum-tbody">
+                    {% for aum in daftar_aum %}
+                    <tr class="aum-row" data-nama="{{ aum.nama|lower }}">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">{{ aum.nama }}</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                {{ aum.get_bidang_display }}
+                            </span>
+                        </td>
+                        <td>{{ aum.alamat }}</td>
+                        <td>{{ aum.deskripsi }}</td>
+                    </tr>
+                    {% empty %}
+                    <!-- Data sementara jika database belum terisi -->
+                    <tr class="aum-row" data-nama="klinik pratama pku muhammadiyah kartasura" data-bidang="kesehatan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">Klinik Pratama PKU Muhammadiyah Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Kesehatan
+                            </span>
+                        </td>
+                        <td>Jl. Ahmad Yani, Kartasura, Sukoharjo</td>
+                        <td>Layanan kesehatan dasar dan balai pengobatan masyarakat (Data Sementara)</td>
+                    </tr>
+                    <tr class="aum-row" data-nama="kl lazismu kartasura" data-bidang="sosial">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">KL LazisMu Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Sosial
+                            </span>
+                        </td>
+                        <td>Gedung Dakwah PCM Kartasura, Sukoharjo</td>
+                        <td>Kantor Layanan Zakat, Infaq, dan Shadaqah Muhammadiyah (Data Sementara)</td>
+                    </tr>
+                    <tr class="aum-row" data-nama="panti asuhan yatim muhammadiyah kartasura" data-bidang="sosial">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">Panti Asuhan Yatim Muhammadiyah Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Sosial
+                            </span>
+                        </td>
+                        <td>Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Lembaga kesejahteraan sosial anak asuh dan yatim piatu (Data Sementara)</td>
+                    </tr>
+                    <tr class="aum-row" data-nama="rumah sakit pku muhammadiyah kartasura" data-bidang="kesehatan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">Rumah Sakit PKU Muhammadiyah Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Kesehatan
+                            </span>
+                        </td>
+                        <td>Jl. Slamet Riyadi, Kartasura, Sukoharjo</td>
+                        <td>Rumah sakit layanan kesehatan dan rawat inap terpadu (Data Sementara)</td>
+                    </tr>
+                    <tr class="aum-row" data-nama="sd muhammadiyah program khusus kartasura" data-bidang="pendidikan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">SD Muhammadiyah Program Khusus Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Pendidikan
+                            </span>
+                        </td>
+                        <td>Jl. Slamet Riyadi No. 80, Kartasura, Sukoharjo</td>
+                        <td>Sekolah Dasar unggulan di bawah Majelis Dikdasmen PCM Kartasura (Data Sementara)</td>
+                    </tr>
+                    <tr class="aum-row" data-nama="smp muhammadiyah 1 kartasura" data-bidang="pendidikan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">SMP Muhammadiyah 1 Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Pendidikan
+                            </span>
+                        </td>
+                        <td>Kartasura, Kab. Sukoharjo</td>
+                        <td>Sekolah Menengah Pertama Muhammadiyah di wilayah PCM Kartasura (Data Sementara)</td>
+                    </tr>
+                    <tr class="aum-row" data-nama="surya mart muhammadiyah kartasura" data-bidang="ekonomi">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">Surya Mart Muhammadiyah Kartasura</td>
+                        <td>
+                            <span class="badge rounded-pill px-3 py-2 text-white fw-semibold" style="background-color: var(--pcm-hijau);">
+                                Ekonomi
+                            </span>
+                        </td>
+                        <td>Kartasura, Kab. Sukoharjo</td>
+                        <td>Unit usaha toko ritel dan pemberdayaan ekonomi umat (Data Sementara)</td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- Baris Pesan Jika Pencarian Tidak Ditemukan -->
+                    <tr id="aum-empty-search" class="d-none">
+                        <td colspan="4" class="text-center py-4 text-muted">
+                            Tidak ditemukan data Amal Usaha yang cocok dengan pencarian Anda.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('aum-search-input');
+        const searchForm = document.getElementById('aum-search-form');
+        const tbody = document.getElementById('aum-tbody');
+        const sortHeader = document.getElementById('sort-nama-aum');
+        const emptySearchRow = document.getElementById('aum-empty-search');
+        const activeBidang = "{{ bidang_filter|default:'' }}";
+        let isAscending = true;
+
+        function filterRows() {
+            const keyword = (searchInput.value || '').trim().toLowerCase();
+            const rows = tbody.querySelectorAll('tr.aum-row');
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+                const rowBidang = row.getAttribute('data-bidang') || '';
+                const matchBidang = (!activeBidang || !rowBidang || rowBidang === activeBidang);
+                const textContent = row.textContent.toLowerCase();
+                const matchKeyword = (keyword === '' || textContent.includes(keyword));
+
+                if (matchBidang && matchKeyword) {
+                    row.classList.remove('d-none');
+                    visibleCount++;
+                } else {
+                    row.classList.add('d-none');
+                }
+            });
+
+            if (visibleCount === 0) {
+                emptySearchRow.classList.remove('d-none');
+            } else {
+                emptySearchRow.classList.add('d-none');
+            }
+        }
+
+        filterRows();
+
+        function sortRows() {
+            const rows = Array.from(tbody.querySelectorAll('tr.aum-row'));
+            isAscending = !isAscending;
+            sortHeader.classList.toggle('desc', !isAscending);
+
+            rows.sort(function (a, b) {
+                const nameA = (a.getAttribute('data-nama') || '').toLowerCase();
+                const nameB = (b.getAttribute('data-nama') || '').toLowerCase();
+                return isAscending ? nameA.localeCompare(nameB, 'id') : nameB.localeCompare(nameA, 'id');
+            });
+
+            rows.forEach(function (row) {
+                tbody.insertBefore(row, emptySearchRow);
+            });
+        }
+
+        searchInput.addEventListener('input', filterRows);
+        searchForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            filterRows();
+        });
+        sortHeader.addEventListener('click', sortRows);
+    });
+</script>
+{% endblock %}
