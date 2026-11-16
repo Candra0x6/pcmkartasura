@@ -1,0 +1,51 @@
+{% extends 'pcm_web/base.html' %}
+
+{% block title %}Berita - PCM Kartasura{% endblock %}
+
+{% block content %}
+<header class="mb-4">
+    <p class="text-success fw-semibold text-uppercase mb-1">Informasi terkini</p>
+    <h1 class="display-6 fw-bold">Berita PCM Kartasura</h1>
+    <p class="text-secondary">Kabar kegiatan dan informasi dari PCM Kartasura.</p>
+</header>
+
+<div class="row g-4">
+    {% for berita in berita_page %}
+    <div class="col-md-6 col-lg-4">
+        {% include 'pcm_web/_kartu_berita.html' with berita=berita %}
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-light border">Belum ada berita yang diterbitkan.</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if berita_page.has_other_pages %}
+<nav class="mt-5" aria-label="Navigasi halaman berita">
+    <ul class="pagination justify-content-center">
+        {% if berita_page.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'pcm_web:daftar_berita' %}?page={{ berita_page.previous_page_number }}">Sebelumnya</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Sebelumnya</span></li>
+        {% endif %}
+
+        {% for page_number in berita_page.paginator.page_range %}
+        <li class="page-item{% if page_number == berita_page.number %} active{% endif %}">
+            <a class="page-link" href="{% url 'pcm_web:daftar_berita' %}?page={{ page_number }}">{{ page_number }}</a>
+        </li>
+        {% endfor %}
+
+        {% if berita_page.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'pcm_web:daftar_berita' %}?page={{ berita_page.next_page_number }}">Berikutnya</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Berikutnya</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

@@ -1,7 +1,78 @@
-from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.db.models import Q
-from .models import Berita, Agenda, PesanMasuk, AmalUsaha, Ranting
+from .models import AmalUsaha, Agenda, Berita, Dokumen, PesanMasuk, Ranting
+
+
+def daftar_berita(request):
+    paginator = Paginator(Berita.objects.terbit(), 6)
+    berita_page = paginator.get_page(request.GET.get('page'))
+    return render(request, 'pcm_web/berita_list.html', {'berita_page': berita_page})
+
+
+def detail_berita(request, slug):
+    berita = get_object_or_404(Berita.objects.terbit(), slug=slug)
+    berita_lainnya = Berita.objects.terbit().exclude(pk=berita.pk)[:3]
+    isi_artikel = berita.isi
+    sumber_url = ""
+    source_marker = "Sumber asli: "
+    if source_marker in isi_artikel:
+        isi_artikel, sumber_url = isi_artikel.rsplit(source_marker, 1)
+        isi_artikel = isi_artikel.rstrip()
+        sumber_url = sumber_url.strip()
+
+    return render(
+        request,
+        'pcm_web/berita_detail.html',
+        {
+            'berita': berita,
+            'berita_lainnya': berita_lainnya,
+            'isi_artikel': isi_artikel,
+            'sumber_url': sumber_url,
+        },
+    )
+
+
+def daftar_unduhan(request):
+    dokumen_list = list(Dokumen.objects.order_by('judul'))
+    dokumen_cabang = [
+        dokumen for dokumen in dokumen_list
+        if dokumen.judul.startswith('SK PDM Sukoharjo')
+    ]
+    dokumen_ranting = [
+        dokumen for dokumen in dokumen_list
+        if dokumen.judul.startswith('SK PCM Kartasura Susunan PRM')
+    ]
+    dokumen_lainnya = [
+        dokumen for dokumen in dokumen_list
+        if dokumen not in dokumen_cabang and dokumen not in dokumen_ranting
+    ]
+    document_sections = [
+        {
+            'title': 'SK Tingkat Cabang — PDM Sukoharjo',
+            'badge': 'Cabang · 2022–2027',
+            'documents': dokumen_cabang,
+        },
+        {
+            'title': 'SK Pimpinan Ranting Muhammadiyah (PRM)',
+            'badge': 'PRM · 2022–2027',
+            'documents': dokumen_ranting,
+        },
+        {
+            'title': 'Dokumen Resmi Lainnya',
+            'badge': 'Dokumen resmi',
+            'documents': dokumen_lainnya,
+        },
+    ]
+    return render(
+        request,
+        'pcm_web/unduhan.html',
+        {
+            'dokumen_list': dokumen_list,
+            'document_sections': document_sections,
+        },
+    )
 
 def cari_berita(request):
     # Mengambil kata kunci dari URL (misal: ?q=pengajian)
@@ -10,9 +81,8 @@ def cari_berita(request):
     
     if query:
         # Mencari berita yang judul ATAU isinya mengandung kata kunci, dan statusnya sudah 'terbit'
-        hasil = Berita.objects.filter(
+        hasil = Berita.objects.terbit().filter(
             Q(judul__icontains=query) | Q(isi__icontains=query),
-            status='terbit'
         )
         
     return render(request, 'pcm_web/cari.html', {'query': query, 'hasil': hasil})
@@ -42,7 +112,7 @@ def halaman_kontak(request):
         
         # Memunculkan notifikasi sukses
         messages.success(request, 'Terima kasih, pesan Anda berhasil dikirim!')
-        return redirect('kontak')
+        return redirect('pcm_web:kontak')
 
     return render(request, 'pcm_web/kontak.html')
 
