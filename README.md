@@ -44,4 +44,4 @@ Sukoharjo pada **16 November 2026**.
 | SK PCM Kartasura Susunan PRM Gonilan 2022–2027 | [Google Drive](https://drive.google.com/file/d/1BoU70gewqgQrGXH6LMmvUT10Y_4fXNMd/view?usp=drive_link) | 16 November 2026 |
 | SK PCM Kartasura Susunan PRM Singopuran 2022–2027 | [Google Drive](https://drive.google.com/file/d/1duR7aLQcqgKtuq4gXI46ZQKzbtor0DJN/view?usp=drive_link) | 16 November 2026 |
 
-Catatan: Penggunaan dokumen ini atas izin Drs. Abdul Fatah Bintoro, pengurus PCM Kartasura.
+Catatan: Penggunaan dokumen ini atas izin Drs. Abdul Fatah Bintoro, Sekretaris PCM Kartasura.
