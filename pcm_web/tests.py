@@ -6,7 +6,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
-from .management.commands.seed_pcm import format_article_content
+from .management.commands.seed_pcm import format_article_content, sk_pdf_filename
 from .models import Berita, Dokumen
 
 
@@ -108,4 +108,33 @@ class BeritaDokumenViewTests(TestCase):
         self.assertEqual(len(response.context['berita_page']), 6)
         self.assertEqual(response.context['berita_page'].paginator.count, 7)
         self.assertEqual(response.context['berita_page'].paginator.num_pages, 2)
+
+    def test_hal_unduhan_mengelompokkan_dan_menautkan_dokumen(self):
+        cabang = Dokumen.objects.create(
+            judul='SK PDM Sukoharjo Susunan PCM Kartasura 2022–2027',
+            keterangan='Penetapan susunan PCM Kartasura periode 2022–2027.',
+            berkas=SimpleUploadedFile('sk-cabang.pdf', b'%PDF-cabang'),
+        )
+        ranting = Dokumen.objects.create(
+            judul='SK PCM Kartasura Susunan PRM Ngemplak 2022–2027',
+            keterangan='Penetapan susunan PRM Ngemplak periode 2022–2027.',
+            berkas=SimpleUploadedFile('sk-ranting.pdf', b'%PDF-ranting'),
+        )
+
+        response = self.client.get(reverse('pcm_web:daftar_unduhan'))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'SK Tingkat Cabang — PDM Sukoharjo')
+        self.assertContains(response, 'SK Pimpinan Ranting Muhammadiyah (PRM)')
+        self.assertContains(response, 'Pratinjau')
+        self.assertContains(response, 'Unduh PDF')
+        self.assertContains(response, 'target="_blank"')
+        self.assertContains(response, cabang.berkas.url)
+        self.assertContains(response, ranting.berkas.url)
+
+    def test_nama_file_sk_mengandung_tanda_hubung_periode(self):
+        self.assertEqual(
+            sk_pdf_filename('SK PCM Kartasura Susunan PRM Ngemplak 2022–2027'),
+            'sk-pcm-kartasura-susunan-prm-ngemplak-2022-2027.pdf',
+        )
 

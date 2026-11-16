@@ -25,3 +25,23 @@ Sukoharjo pada **16 November 2026**.
 | Mahasiswa Fisioterapi UMS Lakukan Deteksi Permasalahan Postur di 8 SD dan TK di Kartasura | [pdmsukoharjo.or.id](https://pdmsukoharjo.or.id/mahasiswa-fisioterapi-ums-lakukan-deteksi-permasalahan-postur-di-8-sd-dan-tk-di-kartasura/) | 16 November 2026 |
 | MPKU PDM Sukoharjo Gelar Rapat Kerja Bahas Rencana Strategis 2025-2029 | [pdmsukoharjo.or.id](https://pdmsukoharjo.or.id/mpku-pdm-sukoharjo-gelar-rapat-kerja-bahas-rencana-strategis-2025-2029/) | 16 November 2026 |
 | 500 Warga Persyarikatan Muhammadiyah Ranting Gonilan memperingati Milad Muhammadiyah ke-112 | [pdmsukoharjo.or.id](https://pdmsukoharjo.or.id/500-warga-persyarikatan-muhammadiyah-ranting-gonilan-memperingati-milad-muhammadiyah-ke-112/) | 16 November 2026 |
+
+## Sumber Data Surat Keputusan
+
+| Data | Sumber | Tanggal Diambil |
+| --- | --- | --- |
+| SK PDM Sukoharjo Susunan PCM Kartasura 2022–2027 | [Google Drive](https://drive.google.com/file/d/1QjrnkfpO9rEN-XJ3BMWvmjcHD-SI1N3_/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Ngemplak 2022–2027 | [Google Drive](https://drive.google.com/file/d/1y7xbeBTXtC-K-FVkucduWEyfWM_oEf_b/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Makamhaji 2022–2027 | [Google Drive](https://drive.google.com/file/d/11D_fpsdT6YSnE6lLZ6WoKR49C8djEAEj/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Ngabeyan 2022–2027 | [Google Drive](https://drive.google.com/file/d/1hbtwQw5lb-TORcQQVJsLeyR06CvGhFAK/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Pabelan 2022–2027 | [Google Drive](https://drive.google.com/file/d/1BSIbKV9X0S9rUuenXZSW7vhY_v6IYUoC/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Pucangan 2022–2027 | [Google Drive](https://drive.google.com/file/d/1k3RATuDfd_xiPIGD308kBBOpeQOYBMH7/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Gumpang 2022–2027 | [Google Drive](https://drive.google.com/file/d/1hD4YEhyDClb9ZgIpD7QCsAhNBp3EsP8M/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Ngadirejo 2022–2027 | [Google Drive](https://drive.google.com/file/d/1XZYqc7eIyHGNWkOIoKgnOG0BYYVdp3tt/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Kertonatan 2022–2027 | [Google Drive](https://drive.google.com/file/d/12jhHDx0oqukvZr61VhsCbEBNdknxo2EL/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Wirogunan 2022–2027 | [Google Drive](https://drive.google.com/file/d/1a_C8DgnQpuPzEwVA4i6TzdyDlYyf61z2/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Kartasura 2022–2027 | [Google Drive](https://drive.google.com/file/d/1q5XqVhhDxyqt1xyDlfNXTTSLMsWqwijo/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Gonilan 2022–2027 | [Google Drive](https://drive.google.com/file/d/1BoU70gewqgQrGXH6LMmvUT10Y_4fXNMd/view?usp=drive_link) | 16 November 2026 |
+| SK PCM Kartasura Susunan PRM Singopuran 2022–2027 | [Google Drive](https://drive.google.com/file/d/1duR7aLQcqgKtuq4gXI46ZQKzbtor0DJN/view?usp=drive_link) | 16 November 2026 |
+
+Catatan: Penggunaan dokumen ini atas izin Drs. Abdul Fatah Bintoro, pengurus PCM Kartasura.

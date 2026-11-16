@@ -35,8 +35,44 @@ def detail_berita(request, slug):
 
 
 def daftar_unduhan(request):
-    dokumen = Dokumen.objects.order_by('-tanggal_unggah')
-    return render(request, 'pcm_web/unduhan.html', {'dokumen_list': dokumen})
+    dokumen_list = list(Dokumen.objects.order_by('judul'))
+    dokumen_cabang = [
+        dokumen for dokumen in dokumen_list
+        if dokumen.judul.startswith('SK PDM Sukoharjo')
+    ]
+    dokumen_ranting = [
+        dokumen for dokumen in dokumen_list
+        if dokumen.judul.startswith('SK PCM Kartasura Susunan PRM')
+    ]
+    dokumen_lainnya = [
+        dokumen for dokumen in dokumen_list
+        if dokumen not in dokumen_cabang and dokumen not in dokumen_ranting
+    ]
+    document_sections = [
+        {
+            'title': 'SK Tingkat Cabang — PDM Sukoharjo',
+            'badge': 'Cabang · 2022–2027',
+            'documents': dokumen_cabang,
+        },
+        {
+            'title': 'SK Pimpinan Ranting Muhammadiyah (PRM)',
+            'badge': 'PRM · 2022–2027',
+            'documents': dokumen_ranting,
+        },
+        {
+            'title': 'Dokumen Resmi Lainnya',
+            'badge': 'Dokumen resmi',
+            'documents': dokumen_lainnya,
+        },
+    ]
+    return render(
+        request,
+        'pcm_web/unduhan.html',
+        {
+            'dokumen_list': dokumen_list,
+            'document_sections': document_sections,
+        },
+    )
 
 def cari_berita(request):
     # Mengambil kata kunci dari URL (misal: ?q=pengajian)
