@@ -1,0 +1,21 @@
+{% extends 'pcm_web/base.html' %}
+{% block title %}Pimpinan PCM Kartasura{% endblock %}
+{% block content %}
+<section class="rounded-3xl bg-[#0F2537] px-6 py-10 text-white sm:px-10">
+  <p class="text-sm font-bold uppercase tracking-widest text-emerald-200">PCM Kartasura</p>
+  <h1 class="mt-2 text-3xl font-extrabold sm:text-4xl">Pimpinan</h1>
+</section>
+
+<section class="mt-8">
+  <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {% for pimpinan in daftar_pimpinan %}<article class="rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-slate-100">
+      <div class="mx-auto flex h-24 w-24 items-center justify-center overflow-hidden rounded-full border-4 border-emerald-100 bg-[#0F2537]">
+        {% if pimpinan.foto %}<img src="{{ pimpinan.foto.url }}" alt="{{ pimpinan.nama }}" class="h-full w-full object-cover">{% elif pimpinan.foto_default_url %}<img src="{{ pimpinan.foto_default_url }}" alt="{{ pimpinan.nama }}" class="h-full w-full object-cover" style="object-position: 50% 30%;">{% else %}<span class="text-2xl font-bold text-white">{{ pimpinan.nama|slice:":1"|default:"P" }}</span>{% endif %}
+      </div>
+      <h2 class="mt-4 text-lg font-bold text-[#0F2537]">{{ pimpinan.nama }}</h2>
+      <p class="mt-1 text-sm font-medium text-[#059669]">{{ pimpinan.jabatan }}</p>
+      <p class="mt-2 text-xs text-slate-500">Periode {{ pimpinan.periode }}</p>
+    </article>{% empty %}<p class="col-span-full rounded-2xl bg-white p-8 text-center text-slate-500 shadow-sm">Data pimpinan belum tersedia.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

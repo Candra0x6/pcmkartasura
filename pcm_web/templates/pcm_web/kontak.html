@@ -4,7 +4,7 @@
 <div style="max-width: 600px; margin: 40px auto; padding: 20px; background-color: white; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
     <h2 style="color: #000080; margin-bottom: 20px;">Hubungi Kami</h2>
 
-    <!-- Menampilkan Notifikasi Sukses -->
+    <!-- Ini bagian yang memunculkan notifikasi sukses -->
     {% if messages %}
         {% for message in messages %}
             <div style="padding: 15px; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; border-radius: 5px; margin-bottom: 20px;">
@@ -14,7 +14,7 @@
     {% endif %}
 
     <!-- Formulir Kontak -->
-    <form method="POST" action="">
+    <form method="POST" action="{% url 'pcm_web:kontak' %}">
         {% csrf_token %}
         <div style="margin-bottom: 15px;">
             <label for="nama" style="display: block; margin-bottom: 5px;">Nama Lengkap:</label>

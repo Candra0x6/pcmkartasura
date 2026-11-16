@@ -18,6 +18,7 @@ def jadwal_shalat(request):
                     'tanggal': data['data']['date']['readable'],
                     'imsak': timings['Imsak'],
                     'subuh': timings['Fajr'],
+                    'terbit': timings['Sunrise'],
                     'dzuhur': timings['Dhuhr'],
                     'ashar': timings['Asr'],
                     'maghrib': timings['Maghrib'],
