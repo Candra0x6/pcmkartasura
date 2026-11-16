@@ -1,10 +1,11 @@
 {% extends 'pcm_web/base.html' %}
 
 {% block content %}
-<div style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
-    <h2 style="color: #000080; margin-bottom: 20px;">Jadwal Agenda PCM Kartasura</h2>
+<div style="max-width: 900px; margin: 40px auto; padding: 0 20px;">
     
-    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; background-color: white;">
+    <!-- Bagian Agenda Mendatang -->
+    <h2 style="color: #000080; margin-bottom: 20px;">Agenda Yang Akan Datang</h2>
+    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; background-color: white; margin-bottom: 40px;">
         <thead style="background-color: #000080; color: white;">
             <tr>
                 <th>No</th>
@@ -15,7 +16,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in daftar_agenda %}
+            {% for item in agenda_mendatang %}
             <tr>
                 <td style="text-align: center;">{{ forloop.counter }}</td>
                 <td>{{ item.nama_kegiatan }}</td>
@@ -25,10 +26,40 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="5" style="text-align: center; padding: 20px;">Belum ada agenda yang dijadwalkan.</td>
+                <td colspan="5" style="text-align: center; padding: 20px;">Belum ada agenda baru yang dijadwalkan.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+    <!-- Bagian Agenda Selesai -->
+    <h2 style="color: #555; margin-bottom: 20px;">Agenda Yang Sudah Selesai</h2>
+    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; background-color: #f9f9f9;">
+        <thead style="background-color: #555; color: white;">
+            <tr>
+                <th>No</th>
+                <th>Nama Kegiatan</th>
+                <th>Waktu Pelaksanaan</th>
+                <th>Tempat</th>
+                <th>Keterangan</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in agenda_selesai %}
+            <tr>
+                <td style="text-align: center;">{{ forloop.counter }}</td>
+                <td>{{ item.nama_kegiatan }}</td>
+                <td>{{ item.waktu_mulai|date:"d M Y, H:i" }}</td>
+                <td>{{ item.tempat }}</td>
+                <td>{{ item.keterangan }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 20px;">Belum ada riwayat agenda yang selesai.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
 </div>
 {% endblock %}

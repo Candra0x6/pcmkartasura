@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils import timezone
 from django.db.models import Q
 from .models import Berita, Agenda, PesanMasuk
 
@@ -18,11 +19,21 @@ def cari_berita(request):
     return render(request, 'pcm_web/cari.html', {'query': query, 'hasil': hasil})
 
 
-
 def halaman_agenda(request):
-    # Mengambil semua data agenda dari database
-    daftar_agenda = Agenda.objects.all()
-    return render(request, 'pcm_web/agenda.html', {'daftar_agenda': daftar_agenda})
+    # Mengambil waktu saat ini dari zona waktu server
+    waktu_sekarang = timezone.now()
+    
+    # Memisahkan agenda yang belum terjadi (waktu_mulai >= sekarang)
+    agenda_mendatang = Agenda.objects.filter(waktu_mulai__gte=waktu_sekarang).order_by('waktu_mulai')
+    
+    # Memisahkan agenda yang sudah lewat (waktu_mulai < sekarang)
+    agenda_selesai = Agenda.objects.filter(waktu_mulai__lt=waktu_sekarang).order_by('-waktu_mulai')
+    
+    return render(request, 'pcm_web/agenda.html', {
+        'agenda_mendatang': agenda_mendatang,
+        'agenda_selesai': agenda_selesai
+    })
+
 
 def halaman_kontak(request):
     if request.method == 'POST':
