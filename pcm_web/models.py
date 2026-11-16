@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
+
 
 class ProfilOrganisasi(models.Model):
     nama = models.CharField(max_length=100)
@@ -73,6 +75,14 @@ class AmalUsaha(models.Model):
     def __str__(self):
         return f"{self.nama} ({self.get_bidang_display()})"
 
+class BeritaQuerySet(models.QuerySet):
+    def terbit(self):
+        return self.filter(
+            status_terbit='terbit',
+            tanggal_terbit__lte=timezone.now(),
+        )
+
+
 class Berita(models.Model):
     STATUS_CHOICES = [
         ('draf', 'Draf'),
@@ -84,21 +94,28 @@ class Berita(models.Model):
     isi = models.TextField()
     gambar_sampul = models.ImageField(upload_to='berita/')
     tanggal_terbit = models.DateTimeField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draf')
+    status_terbit = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default='draf',
+    )
+
+    objects = BeritaQuerySet.as_manager()
 
     class Meta:
         verbose_name_plural = "Berita"
         ordering = ['-tanggal_terbit']
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            base_slug = slugify(self.judul)
-            slug = base_slug
-            counter = 1
-            while Berita.objects.filter(slug=slug).exists():
-                slug = f'{base_slug}-{counter}'
-                counter += 1
-            self.slug = slug
+        max_length = self._meta.get_field('slug').max_length
+        base_slug = slugify(self.slug or self.judul)[:max_length]
+        candidate = base_slug
+        counter = 1
+        while Berita.objects.filter(slug=candidate).exclude(pk=self.pk).exists():
+            suffix = f'-{counter}'
+            candidate = f'{base_slug[:max_length - len(suffix)]}{suffix}'
+            counter += 1
+        self.slug = candidate
         super().save(*args, **kwargs)
 
     def __str__(self):

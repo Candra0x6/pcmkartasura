@@ -1,0 +1,99 @@
+{% extends 'pcm_web/base.html' %}
+
+{% block title %}Unduhan Dokumen - PCM Kartasura{% endblock %}
+
+{% block content %}
+<style>
+    .document-page {
+        color: #0F2537;
+    }
+
+    .document-section-title {
+        color: #0F2537;
+    }
+
+    .document-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(15, 37, 55, 0.1);
+        border-radius: 1rem;
+    }
+
+    .document-badge {
+        background: #059669;
+        color: #FFFFFF;
+    }
+
+    .btn-document {
+        background: #059669;
+        border-color: #059669;
+        color: #FFFFFF;
+    }
+
+    .btn-document:hover,
+    .btn-document:focus {
+        background: #047857;
+        border-color: #047857;
+        color: #FFFFFF;
+    }
+
+    .btn-document-outline {
+        border-color: #059669;
+        color: #059669;
+    }
+
+    .btn-document-outline:hover,
+    .btn-document-outline:focus {
+        background: #059669;
+        color: #FFFFFF;
+    }
+</style>
+
+<header class="document-page mb-5">
+    <p class="text-success fw-semibold text-uppercase mb-2">Pusat dokumen resmi</p>
+    <h1 class="display-6 fw-bold">Arsip Surat Keputusan &amp; Dokumen Resmi PCM Kartasura Periode 2022–2027</h1>
+    <p class="text-secondary mb-0">Arsip keputusan susunan pimpinan cabang dan ranting Muhammadiyah se-Cabang Kartasura.</p>
+</header>
+
+<div class="document-page">
+    {% if not dokumen_list %}
+    <div class="document-card p-4 text-secondary">Belum ada dokumen yang tersedia.</div>
+    {% endif %}
+    {% for section in document_sections %}
+    {% if section.documents %}
+    <section class="mb-5">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-3">
+            <h2 class="document-section-title h3 fw-bold mb-0">{{ section.title }}</h2>
+            <span class="badge document-badge rounded-pill px-3 py-2">{{ section.badge }}</span>
+        </div>
+        <div class="row g-3">
+            {% for dokumen in section.documents %}
+            <div class="col-12">
+                <article class="document-card shadow-sm p-4">
+                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                        <div>
+                            <span class="badge document-badge rounded-pill mb-2">{{ section.badge }}</span>
+                            <h3 class="h5 fw-bold mb-2">{{ dokumen.judul }}</h3>
+                            <p class="text-secondary mb-2">{{ dokumen.keterangan }}</p>
+                            <small class="text-muted">Diunggah {{ dokumen.tanggal_unggah|date:"d M Y" }}</small>
+                        </div>
+                        {% if dokumen.berkas %}
+                        <div class="d-flex flex-wrap gap-2 flex-shrink-0">
+                            <a class="btn btn-document-outline" href="{{ dokumen.berkas.url }}" target="_blank"
+                                rel="noopener noreferrer">
+                                Pratinjau
+                            </a>
+                            <a class="btn btn-document" href="{{ dokumen.berkas.url }}" download>
+                                Unduh PDF
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}

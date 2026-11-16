@@ -1,0 +1,278 @@
+{% extends 'pcm_web/base.html' %}
+
+{% block title %}Daftar Pimpinan Ranting Muhammadiyah/'Aisyiyah - PCM Kartasura{% endblock %}
+
+{% block content %}
+<style>
+    /* Bar Pencarian Terpusat Menyatu */
+    .prm-search-group {
+        max-width: 560px;
+        margin: 0 auto;
+    }
+
+    .prm-search-input {
+        border: 1.5px solid #cbd5e1;
+        border-right: none;
+        padding: 0.65rem 1.15rem;
+        font-size: 0.95rem;
+    }
+
+    .prm-search-input:focus {
+        border-color: var(--pcm-navy);
+        box-shadow: none;
+    }
+
+    .btn-cari-prm {
+        background-color: var(--pcm-navy);
+        color: var(--pcm-putih);
+        border: 1.5px solid var(--pcm-navy);
+        padding: 0.65rem 1.6rem;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-cari-prm:hover {
+        background-color: #000066;
+        color: var(--pcm-putih);
+    }
+
+    /* Tabel Modern Ber-header Biru Navy */
+    .table-prm-wrapper {
+        border: 1px solid #e2e8f0;
+    }
+
+    .table-prm thead th {
+        background-color: var(--pcm-navy);
+        color: var(--pcm-putih);
+        font-weight: 600;
+        border: none;
+        padding: 0.95rem 1.25rem;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .table-prm tbody td {
+        padding: 0.95rem 1.25rem;
+        vertical-align: middle;
+        border-color: #eef2f6;
+        color: #334155;
+    }
+
+    .table-prm tbody tr.prm-row {
+        transition: background-color 0.18s ease;
+    }
+
+    .table-prm tbody tr.prm-row:hover {
+        background-color: rgba(46, 139, 87, 0.05);
+    }
+
+    .sortable-header {
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .sortable-header:hover {
+        opacity: 0.9;
+    }
+
+    .sort-indicator {
+        font-size: 0.8rem;
+        margin-left: 0.35rem;
+        display: inline-block;
+        transition: transform 0.2s ease;
+    }
+
+    .sortable-header.desc .sort-indicator {
+        transform: rotate(180deg);
+    }
+</style>
+
+<!-- Kontainer Kartu Putih Besar -->
+<div class="bg-white rounded-4 shadow-sm p-4 p-md-5 border">
+    <!-- Judul Tengah Berwarna var(--pcm-navy) -->
+    <h2 class="fw-bold text-center mb-4" style="color: var(--pcm-navy);">
+        Daftar Pimpinan Ranting Muhammadiyah/'Aisyiyah
+    </h2>
+
+    <!-- Bar Pencarian Terpusat ("Cari nama PRM..." + Tombol Biru Navy "Cari") -->
+    <form id="prm-search-form" class="mb-4" onsubmit="return false;">
+        <div class="input-group prm-search-group shadow-sm rounded-3 overflow-hidden">
+            <input
+                type="search"
+                id="prm-search-input"
+                class="form-control prm-search-input border-0"
+                placeholder="Cari nama PRM..."
+                aria-label="Cari nama PRM"
+            >
+            <button class="btn btn-cari-prm" type="submit" id="prm-search-btn">
+                Cari
+            </button>
+        </div>
+    </form>
+
+    <!-- Tabel Lebar Ber-header Biru var(--pcm-navy) -->
+    <div class="table-prm-wrapper rounded-top-3 rounded-bottom-3 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover table-prm mb-0" id="prm-table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="sortable-header" id="sort-nama-prm" title="Klik untuk mengurutkan A-Z / Z-A">
+                            Nama PRM <span class="sort-indicator">&#9650;</span>
+                        </th>
+                        <th scope="col">Alamat</th>
+                        <th scope="col">Ketua PRM</th>
+                        <th scope="col">Telepon</th>
+                    </tr>
+                </thead>
+                <tbody id="prm-tbody">
+                    {% for ranting in daftar_ranting %}
+                    <tr class="prm-row" data-nama="{{ ranting.nama_ranting|lower }}">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">{{ ranting.nama_ranting }}</td>
+                        <td>{{ ranting.alamat }}</td>
+                        <td>{{ ranting.ketua }}</td>
+                        <td>{{ ranting.telepon|default:"-" }}</td>
+                    </tr>
+                    {% empty %}
+                    <!-- Data sementara sambil menunggu data resmi dari PCM Kartasura -->
+                    <tr class="prm-row" data-nama="prm gonilan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Gonilan</td>
+                        <td>Desa Gonilan, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm gumpang">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Gumpang</td>
+                        <td>Desa Gumpang, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm kartasura">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Kartasura</td>
+                        <td>Kelurahan Kartasura, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm kertonatan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Kertonatan</td>
+                        <td>Desa Kertonatan, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm makamhaji">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Makamhaji</td>
+                        <td>Desa Makamhaji, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm ngabeyan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Ngabeyan</td>
+                        <td>Kelurahan Ngabeyan, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm ngadirejo">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Ngadirejo</td>
+                        <td>Desa Ngadirejo, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm ngemplak">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Ngemplak</td>
+                        <td>Desa Ngemplak, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm pabelan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Pabelan</td>
+                        <td>Desa Pabelan, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm pucangan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Pucangan</td>
+                        <td>Desa Pucangan, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm singopuran">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Singopuran</td>
+                        <td>Desa Singopuran, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    <tr class="prm-row" data-nama="prm wirogunan">
+                        <td class="fw-bold" style="color: var(--pcm-navy);">PRM Wirogunan</td>
+                        <td>Desa Wirogunan, Kec. Kartasura, Kab. Sukoharjo</td>
+                        <td>Data Sementara (Menunggu Data Resmi)</td>
+                        <td>-</td>
+                    </tr>
+                    {% endfor %}
+
+                    <!-- Baris Pesan Jika Pencarian Tidak Ditemukan -->
+                    <tr id="prm-empty-search" class="d-none">
+                        <td colspan="4" class="text-center py-4 text-muted">
+                            Tidak ditemukan data Pimpinan Ranting yang cocok dengan pencarian Anda.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('prm-search-input');
+        const searchForm = document.getElementById('prm-search-form');
+        const tbody = document.getElementById('prm-tbody');
+        const sortHeader = document.getElementById('sort-nama-prm');
+        const emptySearchRow = document.getElementById('prm-empty-search');
+        let isAscending = true;
+
+        function filterRows() {
+            const keyword = (searchInput.value || '').trim().toLowerCase();
+            const rows = tbody.querySelectorAll('tr.prm-row');
+            let visibleCount = 0;
+
+            rows.forEach(function (row) {
+                const textContent = row.textContent.toLowerCase();
+                if (keyword === '' || textContent.includes(keyword)) {
+                    row.classList.remove('d-none');
+                    visibleCount++;
+                } else {
+                    row.classList.add('d-none');
+                }
+            });
+
+            if (visibleCount === 0) {
+                emptySearchRow.classList.remove('d-none');
+            } else {
+                emptySearchRow.classList.add('d-none');
+            }
+        }
+
+        function sortRows() {
+            const rows = Array.from(tbody.querySelectorAll('tr.prm-row'));
+            isAscending = !isAscending;
+            sortHeader.classList.toggle('desc', !isAscending);
+
+            rows.sort(function (a, b) {
+                const nameA = (a.getAttribute('data-nama') || '').toLowerCase();
+                const nameB = (b.getAttribute('data-nama') || '').toLowerCase();
+                return isAscending ? nameA.localeCompare(nameB, 'id') : nameB.localeCompare(nameA, 'id');
+            });
+
+            rows.forEach(function (row) {
+                tbody.insertBefore(row, emptySearchRow);
+            });
+        }
+
+        searchInput.addEventListener('input', filterRows);
+        searchForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            filterRows();
+        });
+        sortHeader.addEventListener('click', sortRows);
+    });
+</script>
+{% endblock %}
