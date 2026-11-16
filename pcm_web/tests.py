@@ -6,6 +6,7 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
+from .management.commands.seed_pcm import format_article_content
 from .models import Berita, Dokumen
 
 
@@ -63,6 +64,33 @@ class BeritaDokumenViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['berita_lainnya']), 3)
+
+    def test_detail_berita_memisahkan_ringkasan_isi_dan_sumber(self):
+        source_url = 'https://pdmsukoharjo.or.id/berita-uji/'
+        berita = self.buat_berita(
+            ringkasan='Ringkasan yang tidak ditampilkan di detail',
+            isi=f'Paragraf pertama.\n\nParagraf kedua.\n\nSumber asli: {source_url}',
+        )
+
+        response = self.client.get(reverse('pcm_web:detail_berita', args=[berita.slug]))
+
+        self.assertNotContains(response, 'Ringkasan yang tidak ditampilkan di detail')
+        self.assertEqual(response.context['isi_artikel'], 'Paragraf pertama.\n\nParagraf kedua.')
+        self.assertEqual(response.context['sumber_url'], source_url)
+        self.assertContains(response, f'href="{source_url}"')
+        self.assertContains(response, 'target="_blank"')
+
+    def test_format_isi_artikel_memisahkan_blok_dan_teks_tanpa_tag(self):
+        html = '<p>Pertama</p><h2>Judul bagian</h2><ul><li>Daftar</li></ul>'
+
+        self.assertEqual(
+            format_article_content(html),
+            'Pertama\n\nJudul bagian\n\nDaftar',
+        )
+        self.assertEqual(
+            format_article_content('Baris pertama\nBaris kedua'),
+            'Baris pertama\n\nBaris kedua',
+        )
 
     def test_slug_berita_kembar_dibuat_unik(self):
         berita_pertama = self.buat_berita(judul='Berita Kembar')

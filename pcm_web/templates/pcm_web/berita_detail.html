@@ -3,6 +3,25 @@
 {% block title %}{{ berita.judul }} - PCM Kartasura{% endblock %}
 
 {% block content %}
+<style>
+    .article-body {
+        color: #334155;
+        font-size: 1rem;
+        line-height: 1.75;
+        text-align: left;
+    }
+
+    .article-body p {
+        margin-bottom: 1.25rem;
+    }
+
+    @media (min-width: 576px) {
+        .article-body {
+            font-size: 17px;
+        }
+    }
+</style>
+
 <div class="row g-5">
     <article class="col-lg-8">
         <a class="text-success text-decoration-none" href="{% url 'pcm_web:daftar_berita' %}">&larr; Kembali ke berita</a>
@@ -12,8 +31,13 @@
         <img src="{{ berita.gambar_sampul.url }}" class="img-fluid rounded-3 mb-4 w-100"
             alt="{{ berita.judul }}" style="max-height: 480px; object-fit: cover;">
         {% endif %}
-        <p class="lead">{{ berita.ringkasan }}</p>
-        <div class="lh-lg">{{ berita.isi|linebreaks }}</div>
+        <div class="article-body">{{ isi_artikel|linebreaks }}</div>
+        {% if sumber_url %}
+        <blockquote class="border-start border-3 ps-3 py-2 bg-light rounded-end small text-secondary">
+            Sumber asli:
+            <a href="{{ sumber_url }}" target="_blank" rel="noopener noreferrer">{{ sumber_url }}</a>
+        </blockquote>
+        {% endif %}
     </article>
 
     <aside class="col-lg-4">

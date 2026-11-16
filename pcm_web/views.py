@@ -14,10 +14,23 @@ def daftar_berita(request):
 def detail_berita(request, slug):
     berita = get_object_or_404(Berita.objects.terbit(), slug=slug)
     berita_lainnya = Berita.objects.terbit().exclude(pk=berita.pk)[:3]
+    isi_artikel = berita.isi
+    sumber_url = ""
+    source_marker = "Sumber asli: "
+    if source_marker in isi_artikel:
+        isi_artikel, sumber_url = isi_artikel.rsplit(source_marker, 1)
+        isi_artikel = isi_artikel.rstrip()
+        sumber_url = sumber_url.strip()
+
     return render(
         request,
         'pcm_web/berita_detail.html',
-        {'berita': berita, 'berita_lainnya': berita_lainnya},
+        {
+            'berita': berita,
+            'berita_lainnya': berita_lainnya,
+            'isi_artikel': isi_artikel,
+            'sumber_url': sumber_url,
+        },
     )
 
 
