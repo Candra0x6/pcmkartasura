@@ -155,3 +155,15 @@ class TautanTerkait(models.Model):
 
     def __str__(self):
         return self.nama
+
+class Agenda(models.Model):
+    nama_kegiatan = models.CharField(max_length=200)
+    waktu_mulai = models.DateTimeField()
+    tempat = models.CharField(max_length=200)
+    keterangan = models.TextField(blank=True, null=True)
+    
+    # --- TAMBAHKAN 1 BARIS INI DI BAWAH ---
+    rutin = models.BooleanField(default=False, help_text="Centang jika ini kegiatan rutin mingguan")
+
+    def __str__(self):
+        return self.nama_kegiatan
