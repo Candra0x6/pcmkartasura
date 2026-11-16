@@ -1,52 +1,41 @@
 {% extends 'pcm_web/base.html' %}
 {% block title %}Beranda · PCM Kartasura{% endblock %}
 {% block content %}
-<section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0F2537] via-[#15394A] to-[#087F63] p-5 sm:p-8 text-white shadow-lg">
-  <div class="pointer-events-none absolute -right-20 -top-28 h-72 w-72 rounded-full bg-emerald-300/10 blur-3xl"></div>
-  <div class="relative">
-  <div class="mb-6">
-    <div class="max-w-3xl"><span class="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-100">Ruang Pimpinan PCM</span>
-      <h1 class="mt-4 text-3xl sm:text-4xl font-bold tracking-tight">{% if profil_cabang %}{{ profil_cabang.nama_pcm|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}{% elif profil %}{{ profil.nama|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}{% else %}Pimpinan Cabang Muhammadiyah Kartasura{% endif %}</h1>
-      <p class="mt-2 max-w-2xl text-sm sm:text-base text-slate-200">Sambutan Ketua Pimpinan Cabang Muhammadiyah Kartasura.</p>
+<section class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0F2537] via-[#15394A] to-[#059669] p-6 text-white shadow-lg sm:p-10">
+  <div class="grid items-center gap-8 lg:grid-cols-2">
+    <div>
+      <span class="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide text-emerald-100">{{ profil.nama_singkat|default:"PCM Kartasura" }}</span>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight sm:text-5xl">{% if profil %}{{ profil.nama|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}{% else %}Pimpinan Cabang Muhammadiyah Kartasura{% endif %}</h1>
+      <p class="mt-4 max-w-xl text-slate-200">{% if profil %}{{ profil.tagline|default:"Mencerahkan dan melayani masyarakat Kartasura." }}{% else %}Mencerahkan dan melayani masyarakat Kartasura.{% endif %}</p>
+      <div class="mt-6 flex flex-wrap gap-3"><a href="{% url 'profil_pcm' %}" class="rounded-xl border border-white/30 px-5 py-3 text-sm font-bold text-emerald-100 transition hover:bg-white hover:text-[#0F2537] focus:bg-white focus:text-[#0F2537] active:bg-white active:text-[#0F2537]">Profil PCM</a><a href="{% url 'pimpinan_pcm' %}" class="rounded-xl border border-white/30 px-5 py-3 text-sm font-bold text-emerald-100 transition hover:bg-white hover:text-[#0F2537] focus:bg-white focus:text-[#0F2537] active:bg-white active:text-[#0F2537]">Pimpinan</a></div>
+    </div>
+    <div class="overflow-hidden rounded-2xl border border-white/15 bg-white/10 p-2">
+      {% if profil and profil.gambar_utama %}<img src="{{ profil.gambar_utama.url }}" alt="PCM Kartasura" class="h-64 w-full rounded-xl object-cover sm:h-80">
+      {% else %}<div class="flex h-64 items-center justify-center rounded-xl bg-gradient-to-br from-[#FAF6F0]/20 to-[#059669]/30 text-center sm:h-80"><div><span class="text-5xl text-emerald-200">✦</span><p class="mt-3 text-sm font-semibold text-white/90">Muhammadiyah Kartasura</p></div></div>{% endif %}
     </div>
   </div>
-  <div id="hero-cards" class="grid gap-4">
-    <article class="rounded-2xl border border-white/15 bg-gradient-to-br from-white/10 to-white/[0.04] p-5 sm:p-6 backdrop-blur-sm">
-      <div class="flex flex-col sm:flex-row gap-4 items-start">
-        {% if profil_cabang.foto_ketua %}<img src="{{ profil_cabang.foto_ketua.url }}" alt="Ketua PCM Kartasura" class="h-28 w-28 rounded-xl object-cover ring-1 ring-white/20">
-        {% else %}<div class="flex h-28 w-28 shrink-0 items-center justify-center rounded-xl bg-white/10 text-3xl text-emerald-200">✦</div>{% endif %}
-        <div><p class="text-xs font-bold uppercase tracking-wider text-emerald-200">Sambutan Ketua</p><h2 class="mt-2 text-lg font-bold">Assalamu’alaikum warahmatullahi wabarakatuh</h2>
-          <p class="mt-2 text-sm leading-relaxed text-slate-200">{{ profil_cabang.sambutan_ketua|default:"Selamat datang di portal Pimpinan Cabang Muhammadiyah Kartasura. Mari bersama menguatkan dakwah dan pelayanan bagi masyarakat." }}</p>
-        </div>
-      </div>
-    </article>
-  </div>
+</section>
+
+<section class="mt-8 grid gap-4 sm:grid-cols-3" aria-label="Statistik PCM Kartasura">
+  <article class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"><p class="text-sm font-semibold text-slate-500">Jumlah Ranting</p><p class="mt-2 text-3xl font-extrabold text-[#0F2537]">{{ jumlah_ranting }}</p></article>
+  <article class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"><p class="text-sm font-semibold text-slate-500">Jumlah Amal Usaha (AUM)</p><p class="mt-2 text-3xl font-extrabold text-[#0F2537]">{{ jumlah_aum }}</p></article>
+  <article class="rounded-2xl border border-slate-100 bg-white p-5 shadow-sm"><p class="text-sm font-semibold text-slate-500">Anggota ber-KTAM</p><p class="mt-2 text-3xl font-extrabold text-[#0F2537]">{{ jumlah_anggota_ktam }}</p><p class="mt-1 text-xs text-slate-500">Data migrasi e-KTAM per 26 Oktober 2026</p></article>
+</section>
+
+<section id="berita" class="mt-12">
+  <div><p class="text-sm font-bold uppercase tracking-widest text-[#059669]">Kabar Persyarikatan</p><h2 class="mt-1 text-3xl font-extrabold text-[#0F2537]">Berita Terbaru</h2></div>
+  <div class="mt-5 grid gap-4 md:grid-cols-3">
+    {% for berita in berita_terbaru %}<article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">
+      {% if berita.gambar %}<img src="{{ berita.gambar.url }}" alt="{{ berita.judul }}" class="h-44 w-full object-cover">{% else %}<div class="flex h-44 items-center justify-center bg-[#FAF6F0] text-sm font-semibold text-[#059669]">PCM Kartasura</div>{% endif %}
+      <div class="p-5"><p class="text-xs text-slate-500">{{ berita.tanggal_publikasi|date:"d M Y" }}</p><h3 class="mt-2 font-bold text-[#0F2537]">{{ berita.judul }}</h3><p class="mt-2 text-sm text-slate-600">{{ berita.isi|truncatewords:22 }}</p></div>
+    </article>{% empty %}<p class="md:col-span-3 rounded-2xl bg-white p-6 text-slate-500">Belum ada berita terbaru.</p>{% endfor %}
   </div>
 </section>
 
-<section id="aum" class="mt-12 scroll-mt-6">
-  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4"><div><p class="text-sm font-bold uppercase tracking-widest text-emerald">Direktori</p><h2 class="mt-1 text-3xl font-extrabold text-navy">Amal Usaha Muhammadiyah</h2></div>
-    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter kategori AUM">
-      <button data-filter="all" class="aum-filter rounded-full bg-navy px-4 py-2 text-sm font-semibold text-white">Semua</button>
-      {% for category in kategori_aum %}<button data-filter="{{ category }}" class="aum-filter rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold hover:border-emerald">{{ category }}</button>{% endfor %}
-    </div>
+<section id="agenda" class="mt-12">
+  <div><p class="text-sm font-bold uppercase tracking-widest text-[#059669]">Jadwal Kegiatan</p><h2 class="mt-1 text-3xl font-extrabold text-[#0F2537]">Agenda Mendatang</h2></div>
+  <div class="mt-5 grid gap-4 md:grid-cols-3">
+    {% for agenda in agenda_mendatang %}<article class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100"><p class="text-sm font-bold text-[#059669]">{{ agenda.waktu_mulai|date:"d M Y · H:i" }}</p><h3 class="mt-2 font-bold text-[#0F2537]">{{ agenda.nama_kegiatan }}</h3><p class="mt-2 text-sm text-slate-600">{{ agenda.tempat }}</p></article>{% empty %}<p class="md:col-span-3 rounded-2xl bg-white p-6 text-slate-500">Belum ada agenda mendatang.</p>{% endfor %}
   </div>
-  <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" id="aum-list">
-    {% for item in daftar_aum %}<article data-category="{{ item.kategori }}" class="aum-card rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-100"><span class="rounded-full bg-emerald/10 px-3 py-1 text-xs font-bold text-emerald">{{ item.kategori }}</span><h3 class="mt-4 text-lg font-bold text-navy">{{ item.nama }}</h3><p class="mt-2 text-sm leading-relaxed text-slate-600">{{ item.deskripsi|truncatewords:24 }}</p><p class="mt-3 text-xs text-slate-500">{{ item.alamat }}</p></article>
-    {% empty %}<p class="col-span-full rounded-2xl bg-white p-6 text-slate-500">Data AUM akan ditampilkan setelah diinput melalui admin.</p>{% endfor %}
-  </div>
-</section>
-
-<section id="prm" class="mt-12 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-slate-100">
-  <div class="flex items-center justify-between gap-4"><div><p class="text-sm font-bold uppercase tracking-widest text-emerald">Jaringan Dakwah</p><h2 class="mt-1 text-2xl font-extrabold text-navy">Pimpinan Ranting</h2></div><a href="{% url 'profil_pcm' %}" class="text-sm font-bold text-emerald">Profil organisasi →</a></div>
-  <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{% for prm in daftar_prm %}<article class="rounded-xl bg-cream p-4"><h3 class="font-bold text-navy">{{ prm.nama_desa }}</h3><p class="mt-1 text-sm text-slate-600">Ketua: {{ prm.ketua_ranting|default:"—" }}</p><p class="mt-1 text-xs text-slate-500">{{ prm.alamat_sekretariat }}</p></article>{% empty %}<p class="text-slate-600">Menguatkan gerakan Muhammadiyah di seluruh desa dan wilayah Kartasura.</p>{% endfor %}</div>
-</section>
-
-<section class="mt-12"><div class="flex items-end justify-between gap-3"><div><p class="text-sm font-bold uppercase tracking-widest text-emerald">Kabar Persyarikatan</p><h2 class="mt-1 text-3xl font-extrabold text-navy">Informasi Terbaru</h2></div><a href="{% url 'cari_berita' %}" class="text-sm font-bold text-emerald">Semua berita →</a></div>
-  <div class="mt-5 grid gap-4 md:grid-cols-3">{% for berita in berita_terbaru %}<article class="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100">{% if berita.gambar %}<img src="{{ berita.gambar.url }}" alt="" class="h-44 w-full object-cover">{% endif %}<div class="p-5"><p class="text-xs text-slate-500">{{ berita.tanggal_publikasi|date:"d M Y" }}</p><h3 class="mt-2 font-bold text-navy">{{ berita.judul }}</h3><p class="mt-2 text-sm text-slate-600">{{ berita.isi|truncatewords:22 }}</p></div></article>{% empty %}<p class="md:col-span-3 rounded-2xl bg-white p-6 text-slate-500">Belum ada informasi terbaru.</p>{% endfor %}</div>
 </section>
 {% endblock %}
-{% block scripts %}<script>
-  const filterButtons=document.querySelectorAll('.aum-filter');
-  filterButtons.forEach(button=>button.addEventListener('click',()=>{const category=button.dataset.filter;document.querySelectorAll('.aum-card').forEach(card=>card.classList.toggle('hidden',category!=='all'&&card.dataset.category!==category));filterButtons.forEach(item=>{item.classList.toggle('bg-navy',item===button);item.classList.toggle('text-white',item===button);item.classList.toggle('bg-white',item!==button)})}));
-</script>{% endblock %}

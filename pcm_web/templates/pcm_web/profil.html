@@ -1,174 +1,30 @@
 {% extends 'pcm_web/base.html' %}
-
-{% block title %}Profil & Struktur Organisasi - PCM Kartasura{% endblock %}
-
+{% block title %}Profil PCM Kartasura{% endblock %}
 {% block content %}
-<!-- HEADER HALAMAN PROFIL -->
-<section class="bg-[#0F2537] text-white py-12 border-b border-slate-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-[#059669] text-white mb-3">
-            Profil & Organisasi
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            {% if profil %}{{ profil.nama|default:"Pimpinan Cabang Muhammadiyah Kartasura" }}{% else %}Pimpinan Cabang Muhammadiyah Kartasura{% endif %}
-        </h1>
-        <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl">
-            Mengenal lebih dekat sejarah perjalanan dakwah, visi persyarikatan, serta jajaran pimpinan yang mengemban amanah di Kecamatan Kartasura.
-        </p>
-    </div>
+<section class="rounded-3xl bg-[#0F2537] px-6 py-10 text-white sm:px-10">
+  <p class="text-sm font-bold uppercase tracking-widest text-emerald-200">Profil PCM Kartasura</p>
+  <h1 class="mt-2 text-3xl font-extrabold sm:text-4xl">Tentang PCM Kartasura</h1>
 </section>
 
-<!-- SEJARAH & SAMBUTAN KETUA -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        
-        <!-- Kolom Sejarah Cabang (2/3) -->
-        <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-            <div class="flex items-center space-x-2 mb-4">
-                <span class="w-1.5 h-6 bg-[#059669] rounded-full"></span>
-                <h2 class="text-2xl font-bold text-[#0F2537]">Sejarah Singkat PCM Kartasura</h2>
-            </div>
-            
-            <div class="prose prose-slate max-w-none text-sm sm:text-base text-slate-600 leading-relaxed space-y-4">
-                {% if profil and profil.sejarah %}
-                    {{ profil.sejarah|linebreaks }}
-                {% else %}
-                    <p>
-                        Gerakan Muhammadiyah di wilayah Kartasura tumbuh seiring semangat pembaruan Islam (tajdid) yang dibawa oleh K.H. Ahmad Dahlan dari Yogyakarta ke wilayah Surakarta dan sekitarnya. Sejak awal berdirinya, Pimpinan Cabang Muhammadiyah (PCM) Kartasura berfokus pada penguatan pendidikan Islam modern, pelayanan sosial, dan dakwah pencerahan di tengah masyarakat.
-                    </p>
-                    <p>
-                        Melalui sinergi antara Pimpinan Cabang, Pimpinan Ranting di tingkat desa/kelurahan, serta dukungan penuh Organisasi Otonom ('Aisyiyah, Pemuda Muhammadiyah, Nasyiatul 'Aisyiyah, IPM, Tapak Suci, dan Hizbul Wathan), PCM Kartasura terus mengembangkan berbagai Amal Usaha Muhammadiyah (AUM) di bidang pendidikan, kesehatan, dan ekonomi umat.
-                    </p>
-                {% endif %}
-            </div>
-
-            <!-- Kutipan Mutiara Dakwah -->
-            <div class="mt-8 p-5 rounded-xl bg-[#FAF6F0] border-l-4 border-[#059669]">
-                <p class="text-sm italic font-medium text-[#0F2537]">
-                    "Hidup-hidupilah Muhammadiyah, jangan mencari hidup di Muhammadiyah."
-                </p>
-                <p class="text-xs font-bold text-[#059669] mt-2">&mdash; K.H. Ahmad Dahlan</p>
-            </div>
-        </div>
-
-        <!-- Kolom Kartu Ketua & Sekretariat (1/3) -->
-        <div class="space-y-6">
-            <!-- Kartu Ketua -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 text-center">
-                <div class="w-28 h-28 mx-auto rounded-full overflow-hidden bg-[#0F2537] border-4 border-[#059669] shadow-md flex items-center justify-center mb-4">
-                    {% if profil and profil.gambar_utama %}
-                        <img src="{{ profil.gambar_utama.url }}" alt="Profil PCM Kartasura" class="w-full h-full object-cover">
-                    {% else %}
-                        <span class="text-white font-bold text-xs">Foto Ketua</span>
-                    {% endif %}
-                </div>
-                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#059669]/10 text-[#059669]">
-                    Ketua PCM Kartasura
-                </span>
-                <p class="text-xs text-slate-600 mt-3 leading-relaxed italic">
-                    "Bersama memajukan Kartasura dan mencerahkan semesta melalui gerakan dakwah yang menggembirakan."
-                </p>
-            </div>
-
-            <!-- Kartu Informasi Sekretariat -->
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-                <h3 class="text-base font-bold text-[#0F2537] mb-3">Kantor Sekretariat</h3>
-                <ul class="space-y-3 text-sm text-slate-600">
-                    <li class="flex items-start gap-2.5">
-                        <svg class="w-5 h-5 text-[#059669] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                        </svg>
-                        <span>{% if profil %}{{ profil.alamat_sekretariat|default:"Jl. Ahmad Yani, Kartasura, Kab. Sukoharjo, Jawa Tengah" }}{% else %}Jl. Ahmad Yani, Kartasura, Kab. Sukoharjo, Jawa Tengah{% endif %}</span>
-                    </li>
-                    <li class="flex items-center gap-2.5">
-                        <svg class="w-5 h-5 text-[#059669] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
-                        </svg>
-                        <span class="font-medium text-[#0F2537]">{% if profil %}{{ profil.telepon|default:"(0271) 780-xxx" }}{% else %}(0271) 780-xxx{% endif %}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-    </div>
+<section class="mt-8 grid gap-6 lg:grid-cols-2">
+  <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8">
+    <h2 class="text-2xl font-bold text-[#0F2537]">Tentang</h2>
+    <div class="prose prose-slate mt-4 max-w-none text-slate-600">{% if profil.tentang %}{{ profil.tentang|linebreaks }}{% else %}<p>Informasi tentang PCM belum diisi.</p>{% endif %}</div>
+    <h2 class="mt-8 text-2xl font-bold text-[#0F2537]">Sejarah</h2>
+    <div class="prose prose-slate mt-4 max-w-none text-slate-600">{% if profil.sejarah %}{{ profil.sejarah|linebreaks }}{% else %}<p>Informasi sejarah PCM belum diisi.</p>{% endif %}</div>
+  </article>
+  <div class="space-y-6">
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8"><h2 class="text-2xl font-bold text-[#0F2537]">Visi</h2><div class="prose prose-slate mt-4 max-w-none text-slate-600">{% if profil.visi %}{{ profil.visi|linebreaks }}{% else %}<p>Visi PCM belum diisi.</p>{% endif %}</div></article>
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8"><h2 class="text-2xl font-bold text-[#0F2537]">Misi</h2>{% if misi_list %}<ol class="mt-4 list-decimal space-y-2 pl-6 text-slate-600">{% for misi in misi_list %}<li>{{ misi }}</li>{% endfor %}</ol>{% else %}<p class="mt-4 text-slate-600">Misi PCM belum diisi.</p>{% endif %}</article>
+  </div>
 </section>
 
-<!-- STRUKTUR PENGURUS (PH / MAJELIS / ORTOM) -->
-<section id="organisasi" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200">
-    <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-        <div>
-            <h2 class="text-2xl font-bold text-[#0F2537]">Struktur Pengurus & Unsur Pembantu Pimpinan</h2>
-            <p class="text-sm text-slate-600 mt-1">Susunan Pimpinan Harian (PH), Majelis & Lembaga, serta Organisasi Otonom (Ortom).</p>
-        </div>
-
-        <!-- Filter Tipe Pengurus -->
-        <div class="flex flex-wrap gap-2">
-            <button type="button" onclick="filterPengurus('ALL', this)"
-                class="pengurus-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-[#059669] text-white shadow-sm transition">
-                Semua Unsur
-            </button>
-            <button type="button" onclick="filterPengurus('PH', this)"
-                class="pengurus-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Pimpinan Harian (PH)
-            </button>
-            <button type="button" onclick="filterPengurus('Majelis', this)"
-                class="pengurus-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Majelis & Lembaga
-            </button>
-            <button type="button" onclick="filterPengurus('Ortom', this)"
-                class="pengurus-tab-btn px-4 py-2 rounded-lg text-xs font-semibold bg-white text-slate-700 border border-slate-200 hover:border-[#059669] transition">
-                Ortom
-            </button>
-        </div>
-    </div>
-
-    <!-- Grid Kartu Pengurus -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% for pengurus in daftar_pengurus %}
-        <div class="pengurus-card bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:border-[#059669] transition text-center flex flex-col items-center" data-tipe="{{ pengurus.tipe }}">
-            <div class="w-20 h-20 rounded-full overflow-hidden bg-[#0F2537] mb-3 border-2 border-[#059669]/40 flex items-center justify-center">
-                {% if pengurus.foto %}
-                    <img src="{{ pengurus.foto.url }}" alt="{{ pengurus.nama }}" class="w-full h-full object-cover">
-                {% else %}
-                    <span class="text-white font-bold text-lg">{{ pengurus.nama|slice:":1" }}</span>
-                {% endif %}
-            </div>
-            <span class="inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-[#FAF6F0] text-[#059669] border border-[#059669]/20 mb-2">
-                {{ pengurus.get_tipe_display }}
-            </span>
-            <h3 class="font-bold text-[#0F2537] text-base leading-snug">{{ pengurus.nama }}</h3>
-            <p class="text-xs text-slate-500 mt-1">{{ pengurus.jabatan }}</p>
-        </div>
-        {% empty %}
-        <div class="col-span-full bg-white rounded-xl p-8 border border-slate-200 text-center text-sm text-slate-500">
-            Data struktur pengurus belum diinput. Silakan tambahkan data melalui Django Admin pada menu <strong>Struktur Pengurus</strong>.
-        </div>
-        {% endfor %}
-    </div>
+<section class="mt-8 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8" aria-labelledby="kontak-pcm">
+  <h2 id="kontak-pcm" class="text-2xl font-bold text-[#0F2537]">Alamat dan Kontak</h2>
+  <dl class="mt-5 grid gap-5 sm:grid-cols-2">
+    {% if profil.alamat_sekretariat %}<div><dt class="text-sm font-semibold text-slate-500">Alamat Sekretariat</dt><dd class="mt-1 text-slate-700">{{ profil.alamat_sekretariat }}</dd></div>{% endif %}
+    {% if profil.telepon %}<div><dt class="text-sm font-semibold text-slate-500">Telepon / WhatsApp</dt><dd class="mt-1 text-slate-700">{{ profil.telepon }}</dd></div>{% endif %}
+    {% if profil.email %}<div><dt class="text-sm font-semibold text-slate-500">Email</dt><dd class="mt-1 text-slate-700">{{ profil.email }}</dd></div>{% endif %}
+  </dl>
 </section>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    function filterPengurus(tipe, clickedBtn) {
-        document.querySelectorAll('.pengurus-tab-btn').forEach(btn => {
-            btn.classList.remove('bg-[#059669]', 'text-white', 'shadow-sm');
-            btn.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-        });
-
-        clickedBtn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-200');
-        clickedBtn.classList.add('bg-[#059669]', 'text-white', 'shadow-sm');
-
-        const cards = document.querySelectorAll('.pengurus-card');
-        cards.forEach(card => {
-            const cardTipe = card.getAttribute('data-tipe');
-            if (tipe === 'ALL' || cardTipe === tipe) {
-                card.classList.remove('hidden');
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-    }
-</script>
 {% endblock %}

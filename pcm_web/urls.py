@@ -9,7 +9,7 @@ urlpatterns = [
     path('kontak/', views.halaman_kontak, name='kontak'),
     # Rute halaman utama (Beranda) yang mengarah ke fungsi beranda di views.py
     path('', views.beranda, name='beranda'),
-    # Rute halaman Profil PCM & Struktur Pimpinan yang mengarah ke fungsi profil_pcm
     path('profil/', views.profil_pcm, name='profil_pcm'),
+    path('pimpinan/', views.pimpinan_pcm, name='pimpinan_pcm'),
 ]
 

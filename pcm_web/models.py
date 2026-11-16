@@ -116,12 +116,17 @@ class ProfilOrganisasi(models.Model):
     misi = models.TextField(help_text="Tulis satu misi per baris")
     alamat_sekretariat = models.TextField()
     telepon = models.CharField(max_length=20)
-    email = models.EmailField()
+    email = models.EmailField(blank=True)
     jumlah_anggota_ktam = models.IntegerField(default=0)
     gambar_utama = models.ImageField(upload_to="profil/")
 
     class Meta:
         verbose_name_plural = "Profil Organisasi"
+
+    def save(self, *args, **kwargs):
+        if self.pk is None and ProfilOrganisasi.objects.exists():
+            raise ValueError("Profil Organisasi hanya boleh memiliki satu baris data.")
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.nama
