@@ -1,0 +1,30 @@
+{% extends 'pcm_web/base.html' %}
+{% block title %}Profil PCM Kartasura{% endblock %}
+{% block content %}
+<section class="rounded-3xl bg-[#0F2537] px-6 py-10 text-white sm:px-10">
+  <p class="text-sm font-bold uppercase tracking-widest text-emerald-200">Profil PCM Kartasura</p>
+  <h1 class="mt-2 text-3xl font-extrabold sm:text-4xl">Tentang PCM Kartasura</h1>
+</section>
+
+<section class="mt-8 grid gap-6 lg:grid-cols-2">
+  <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8">
+    <h2 class="text-2xl font-bold text-[#0F2537]">Tentang</h2>
+    <div class="prose prose-slate mt-4 max-w-none text-slate-600">{% if profil.tentang %}{{ profil.tentang|linebreaks }}{% else %}<p>Informasi tentang PCM belum diisi.</p>{% endif %}</div>
+    <h2 class="mt-8 text-2xl font-bold text-[#0F2537]">Sejarah</h2>
+    <div class="prose prose-slate mt-4 max-w-none text-slate-600">{% if profil.sejarah %}{{ profil.sejarah|linebreaks }}{% else %}<p>Informasi sejarah PCM belum diisi.</p>{% endif %}</div>
+  </article>
+  <div class="space-y-6">
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8"><h2 class="text-2xl font-bold text-[#0F2537]">Visi</h2><div class="prose prose-slate mt-4 max-w-none text-slate-600">{% if profil.visi %}{{ profil.visi|linebreaks }}{% else %}<p>Visi PCM belum diisi.</p>{% endif %}</div></article>
+    <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8"><h2 class="text-2xl font-bold text-[#0F2537]">Misi</h2>{% if misi_list %}<ol class="mt-4 list-decimal space-y-2 pl-6 text-slate-600">{% for misi in misi_list %}<li>{{ misi }}</li>{% endfor %}</ol>{% else %}<p class="mt-4 text-slate-600">Misi PCM belum diisi.</p>{% endif %}</article>
+  </div>
+</section>
+
+<section class="mt-8 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 sm:p-8" aria-labelledby="kontak-pcm">
+  <h2 id="kontak-pcm" class="text-2xl font-bold text-[#0F2537]">Alamat dan Kontak</h2>
+  <dl class="mt-5 grid gap-5 sm:grid-cols-2">
+    {% if profil.alamat_sekretariat %}<div><dt class="text-sm font-semibold text-slate-500">Alamat Sekretariat</dt><dd class="mt-1 text-slate-700">{{ profil.alamat_sekretariat }}</dd></div>{% endif %}
+    {% if profil.telepon %}<div><dt class="text-sm font-semibold text-slate-500">Telepon / WhatsApp</dt><dd class="mt-1 text-slate-700">{{ profil.telepon }}</dd></div>{% endif %}
+    {% if profil.email %}<div><dt class="text-sm font-semibold text-slate-500">Email</dt><dd class="mt-1 text-slate-700">{{ profil.email }}</dd></div>{% endif %}
+  </dl>
+</section>
+{% endblock %}

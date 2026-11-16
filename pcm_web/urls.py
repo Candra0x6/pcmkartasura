@@ -1,15 +1,15 @@
 from django.urls import path
 from . import views
 
-app_name = 'pcm_web'
-
+# Daftar routing URL utama aplikasi
 urlpatterns = [
+    path('dashboard/panitia/', views.dashboard_panitia, name='dashboard_panitia'),
     path('cari/', views.cari_berita, name='cari_berita'),
     path('agenda/', views.halaman_agenda, name='agenda'),
     path('kontak/', views.halaman_kontak, name='kontak'),
-    path('amal-usaha/', views.halaman_amal_usaha, name='amal_usaha'),
-    path('ranting/', views.halaman_ranting, name='ranting'),
-    path('berita/', views.daftar_berita, name='daftar_berita'),
-    path('berita/<slug:slug>/', views.detail_berita, name='detail_berita'),
-    path('unduhan/', views.daftar_unduhan, name='daftar_unduhan'),
+    # Rute halaman utama (Beranda) yang mengarah ke fungsi beranda di views.py
+    path('', views.beranda, name='beranda'),
+    path('profil/', views.profil_pcm, name='profil_pcm'),
+    path('pimpinan/', views.pimpinan_pcm, name='pimpinan_pcm'),
 ]
+

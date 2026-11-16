@@ -1,184 +1,44 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Website PCM{% endblock %}</title>
-
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --pcm-navy: #0F2537;
-            --pcm-putih: #FFFFFF;
-            --pcm-cream: #FAF6F0;
-            --pcm-hijau: #059669;
-        }
-
-        body {
-            background-color: var(--pcm-cream);
-            color: var(--pcm-navy);
-            font-family: Inter, sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .navbar-custom {
-            background-color: var(--pcm-navy);
-        }
-
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link {
-            color: var(--pcm-putih);
-            position: relative;
-            transition: color 0.2s ease;
-        }
-
-        .navbar-custom .nav-link:hover {
-            color: var(--pcm-hijau);
-        }
-
-        .navbar-custom .nav-link.active {
-            color: var(--pcm-putih);
-            font-weight: 600;
-        }
-
-        .navbar-custom .nav-link.active::after {
-            content: "";
-            position: absolute;
-            left: 0.5rem;
-            right: 0.5rem;
-            bottom: 2px;
-            height: 3px;
-            background-color: var(--pcm-hijau);
-            border-radius: 2px;
-        }
-
-        .navbar-nav .dropdown-menu {
-            display: block;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(8px);
-            transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
-            margin-top: 0;
-        }
-
-        .navbar-nav .dropdown:hover > .dropdown-menu,
-        .navbar-nav .dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .navbar-nav .dropdown-item {
-            padding: 0.55rem 1.15rem;
-            font-size: 0.95rem;
-            color: #1f2937;
-            transition: background-color 0.2s ease, color 0.2s ease, padding-left 0.2s ease;
-        }
-
-        .navbar-nav .dropdown-item:hover,
-        .navbar-nav .dropdown-item:focus {
-            background-color: rgba(46, 139, 87, 0.12);
-            color: var(--pcm-hijau);
-            padding-left: 1.4rem;
-        }
-
-        .footer-custom {
-            background-color: var(--pcm-navy);
-            color: var(--pcm-putih);
-            margin-top: auto;
-        }
-    </style>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0F2537">
+  <title>{% block title %}PCM Kartasura{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config={theme:{extend:{colors:{navy:'#0F2537',cream:'#FAF6F0',emerald:'#059669'}}}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>body{font-family:Inter,ui-sans-serif,system-ui,sans-serif}</style>
 </head>
-
-<body>
-
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{% url 'pcm_web:daftar_berita' %}">PCM KARTASURA</a>
-            <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/profil/' in request.path %}active{% endif %}" href="/profil/">Profil</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/ranting/' in request.path %}active{% endif %}" href="{% url 'pcm_web:ranting' %}">PRM/PRA</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if '/amal-usaha/' in request.path %}active{% endif %}" href="/amal-usaha/" id="aumNavbarDropdown" role="button" aria-expanded="false">
-                            AUM
-                        </a>
-                        <ul class="dropdown-menu rounded-3 shadow-lg border-0 py-2" aria-labelledby="aumNavbarDropdown">
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=klinik">Klinik &amp; Balai Pengobatan</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=lazismu">LazisMu</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=panti-asuhan">Panti Asuhan</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=pondok-pesantren">Pondok Pesantren</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=rumah-sakit">Rumah Sakit</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=sekolah">Sekolah / Madrasah</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=toko">Toko</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item"><a class="nav-link {% if '/berita/' in request.path %}active{% endif %}" href="/berita/">Berita</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/agenda/' in request.path %}active{% endif %}" href="/agenda/">Agenda</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/unduhan/' in request.path %}active{% endif %}" href="{% url 'pcm_web:daftar_unduhan' %}">Unduhan</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/kontak/' in request.path %}active{% endif %}" href="{% url 'pcm_web:kontak' %}">Kontak</a></li>
-                </ul>
-                <!-- Form Pencarian (Fitur Rani) -->
-                <form class="d-flex" action="{% url 'pcm_web:cari_berita' %}" method="GET">
-                    <input class="form-control me-2" type="search" name="q" placeholder="Cari berita..."
-                        aria-label="Search">
-                    <button class="btn btn-outline-light" type="submit"
-                        style="border-color: var(--pcm-hijau); color: var(--pcm-hijau);">Cari</button>
-                </form>
-            </div>
-        </div>
+<body class="min-h-screen bg-cream text-slate-800 flex flex-col">
+  <div class="bg-navy text-slate-200 text-xs sm:text-sm"><div class="mx-auto max-w-7xl px-4 py-2 flex justify-between gap-3">
+    <span>KHGT (Kalender Hijriah Global Tunggal)</span><span id="realtime-clock" aria-live="off">--:--:-- WIB</span>
+  </div></div>
+  <header class="bg-navy text-white shadow-lg">
+    <nav class="mx-auto max-w-7xl px-4 py-4 flex flex-wrap items-center justify-between gap-4" aria-label="Navigasi utama">
+      <a href="{% url 'beranda' %}" class="text-lg font-extrabold tracking-wide">PCM KARTASURA</a>
+      <button id="nav-toggle" class="md:hidden rounded-lg border border-white/30 px-3 py-2" aria-expanded="false" aria-controls="main-nav">Menu</button>
+      <div id="main-nav" class="hidden md:flex w-full md:w-auto flex-col md:flex-row md:items-center gap-2 md:gap-5 text-sm font-medium">
+        <a href="{% url 'beranda' %}" class="hover:text-emerald-300">Beranda</a><a href="{% url 'profil_pcm' %}" class="hover:text-emerald-300">Profil</a>
+        <a href="{% url 'beranda' %}#aum" class="hover:text-emerald-300">AUM</a><a href="{% url 'beranda' %}#prm" class="hover:text-emerald-300">PRM</a>
+        <a href="{% url 'profil_pcm' %}#organisasi" class="hover:text-emerald-300">Organisasi</a><a href="{% url 'cari_berita' %}" class="hover:text-emerald-300">Informasi</a>
+        <a href="{% url 'agenda' %}" class="hover:text-emerald-300">Agenda</a><a href="{% url 'kontak' %}" class="hover:text-emerald-300">Kontak</a>
+      </div>
     </nav>
-
-    <!-- BAR JADWAL SHALAT (WIDGET) -->
-    {% if jadwal_shalat %}
-    <div class="bg-success text-white py-1 shadow-sm">
-        <div class="container text-center" style="font-size: 0.9rem;">
-            <span class="me-3 fw-bold">{{ jadwal_shalat.tanggal }}</span>
-            <span class="me-3">Imsak: {{ jadwal_shalat.imsak }}</span>
-            <span class="me-3">Subuh: {{ jadwal_shalat.subuh }}</span>
-            <span class="me-3">Dzuhur: {{ jadwal_shalat.dzuhur }}</span>
-            <span class="me-3">Ashar: {{ jadwal_shalat.ashar }}</span>
-            <span class="me-3">Maghrib: {{ jadwal_shalat.maghrib }}</span>
-            <span>Isya: {{ jadwal_shalat.isya }}</span>
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- KONTEN UTAMA (Tempat halaman lain muncul) -->
-    <main class="container my-5">
-        {% block content %}
-        {% endblock %}
-    </main>
-
-    <!-- FOOTER WAJIB -->
-    <footer class="footer-custom py-4">
-        <div class="container text-center">
-            <p class="mb-1"><strong>Pimpinan Cabang Muhammadiyah Kartasura</strong></p>
-            <hr style="border-color: var(--pcm-hijau);">
-            <small>
-                Website ini dibuat untuk tugas kuliah Pemrograman Web berbasis Framework, bukan website resmi PCM.<br>
-                Logo Muhammadiyah: K. H. Siradj Dahlan, vektor oleh Hibensis, via Wikimedia Commons, lisensi CC BY-SA
-                4.0<br>
-                Sumber foto berita: PDM Kabupaten Sukoharjo - pdmsukoharjo.or.id
-            </small>
-        </div>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </header>
+  {% if jadwal_shalat %}<section class="bg-emerald text-white" aria-label="Jadwal shalat"><div class="mx-auto max-w-7xl px-4 py-3 flex flex-wrap justify-center sm:justify-between items-center gap-x-5 gap-y-2 text-xs sm:text-sm">
+    <strong class="text-emerald-100">Jadwal Shalat{% if jadwal_shalat.tanggal %} · {{ jadwal_shalat.tanggal }}{% endif %}</strong>
+    <span>Imsak <b>{{ jadwal_shalat.imsak }}</b></span><span>Subuh <b>{{ jadwal_shalat.subuh }}</b></span><span>Terbit <b>{{ jadwal_shalat.terbit }}</b></span><span>Dzuhur <b>{{ jadwal_shalat.dzuhur }}</b></span><span>Ashar <b>{{ jadwal_shalat.ashar }}</b></span><span>Maghrib <b>{{ jadwal_shalat.maghrib }}</b></span><span>Isya <b>{{ jadwal_shalat.isya }}</b></span>
+  </div></section>{% endif %}
+  <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:py-10">{% block content %}{% endblock %}</main>
+  <footer class="bg-navy text-slate-200 mt-10"><div class="mx-auto max-w-7xl px-4 py-7 flex flex-col sm:flex-row justify-between gap-3 text-sm"><strong>PCM Kartasura</strong><span>Dakwah Islam berkemajuan untuk masyarakat.</span></div></footer>
+  <script>
+    function updateClock(){const now=new Date();const parts=new Intl.DateTimeFormat('id-ID',{timeZone:'Asia/Jakarta',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).format(now);document.getElementById('realtime-clock').textContent=parts+' WIB'}
+    updateClock();setInterval(updateClock,1000);
+    const navToggle=document.getElementById('nav-toggle'),mainNav=document.getElementById('main-nav');
+    navToggle.addEventListener('click',()=>{const open=navToggle.getAttribute('aria-expanded')==='true';navToggle.setAttribute('aria-expanded',String(!open));mainNav.classList.toggle('hidden',open);mainNav.classList.toggle('flex',!open)});
+  </script>
+  {% block scripts %}{% endblock %}
 </body>
-
 </html>
