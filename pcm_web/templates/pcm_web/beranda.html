@@ -10,8 +10,8 @@
       <div class="mt-6 flex flex-wrap gap-3"><a href="{% url 'profil_pcm' %}" class="rounded-xl border border-white/30 px-5 py-3 text-sm font-bold text-emerald-100 transition hover:bg-white hover:text-[#0F2537] focus:bg-white focus:text-[#0F2537] active:bg-white active:text-[#0F2537]">Profil PCM</a><a href="{% url 'pimpinan_pcm' %}" class="rounded-xl border border-white/30 px-5 py-3 text-sm font-bold text-emerald-100 transition hover:bg-white hover:text-[#0F2537] focus:bg-white focus:text-[#0F2537] active:bg-white active:text-[#0F2537]">Pimpinan</a></div>
     </div>
     <div class="overflow-hidden rounded-2xl border border-white/15 bg-white/10 p-2">
-      {% if profil and profil.gambar_utama %}<img src="{{ profil.gambar_utama.url }}" alt="PCM Kartasura" class="h-64 w-full rounded-xl object-cover sm:h-80">
-      {% else %}<div class="flex h-64 items-center justify-center rounded-xl bg-gradient-to-br from-[#FAF6F0]/20 to-[#059669]/30 text-center sm:h-80"><div><span class="text-5xl text-emerald-200">✦</span><p class="mt-3 text-sm font-semibold text-white/90">Muhammadiyah Kartasura</p></div></div>{% endif %}
+      {% if gambar_hero %}<img src="{{ gambar_hero }}" alt="Foto pimpinan PCM Kartasura" class="aspect-[4/3] w-full rounded-xl bg-[#FAF6F0] object-contain">
+      {% else %}<div class="flex aspect-[4/3] items-center justify-center rounded-xl bg-gradient-to-br from-[#FAF6F0]/20 to-[#059669]/30 text-center"><div><span class="text-5xl text-emerald-200">✦</span><p class="mt-3 text-sm font-semibold text-white/90">Muhammadiyah Kartasura</p></div></div>{% endif %}
     </div>
   </div>
 </section>
