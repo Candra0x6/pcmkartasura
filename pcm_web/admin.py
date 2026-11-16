@@ -2,7 +2,6 @@ from django.contrib import admin
 from .models import Agenda, PesanMasuk, ProfilCabang, StrukturPengurus, AUM, PRM, BeritaInformasi, PanitiaKegiatan
 from .models import ProfilOrganisasi, Pimpinan
 
-# Register your models here.
 admin.site.register(Agenda)
 admin.site.register(PesanMasuk)
 
