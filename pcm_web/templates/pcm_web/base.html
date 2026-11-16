@@ -65,7 +65,7 @@
             margin-top: 0;
         }
 
-        .navbar-nav .dropdown:hover > .dropdown-menu,
+        .navbar-nav .dropdown:hover>.dropdown-menu,
         .navbar-nav .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
@@ -105,25 +105,35 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/profil/' in request.path %}active{% endif %}" href="/profil/">Profil</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/ranting/' in request.path %}active{% endif %}" href="{% url 'ranting' %}">PRM/PRA</a></li>
+                    <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}"
+                            href="/">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link {% if '/profil/' in request.path %}active{% endif %}"
+                            href="/profil/">Profil</a></li>
+                    <li class="nav-item"><a class="nav-link {% if '/ranting/' in request.path %}active{% endif %}"
+                            href="{% url 'ranting' %}">PRM/PRA</a></li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle {% if '/amal-usaha/' in request.path %}active{% endif %}" href="/amal-usaha/" id="aumNavbarDropdown" role="button" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle {% if '/amal-usaha/' in request.path %}active{% endif %}"
+                            href="/amal-usaha/" id="aumNavbarDropdown" role="button" aria-expanded="false">
                             AUM
                         </a>
                         <ul class="dropdown-menu rounded-3 shadow-lg border-0 py-2" aria-labelledby="aumNavbarDropdown">
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=klinik">Klinik &amp; Balai Pengobatan</a></li>
+                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=klinik">Klinik &amp; Balai
+                                    Pengobatan</a></li>
                             <li><a class="dropdown-item" href="/amal-usaha/?kategori=lazismu">LazisMu</a></li>
+                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=masjid">Masjid</a></li>
                             <li><a class="dropdown-item" href="/amal-usaha/?kategori=panti-asuhan">Panti Asuhan</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=pondok-pesantren">Pondok Pesantren</a></li>
+                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=pondok-pesantren">Pondok
+                                    Pesantren</a></li>
                             <li><a class="dropdown-item" href="/amal-usaha/?kategori=rumah-sakit">Rumah Sakit</a></li>
-                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=sekolah">Sekolah / Madrasah</a></li>
+                            <li><a class="dropdown-item" href="/amal-usaha/?kategori=sekolah">Sekolah / Madrasah</a>
+                            </li>
                             <li><a class="dropdown-item" href="/amal-usaha/?kategori=toko">Toko</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link {% if '/berita/' in request.path %}active{% endif %}" href="/berita/">Berita</a></li>
-                    <li class="nav-item"><a class="nav-link {% if '/agenda/' in request.path %}active{% endif %}" href="/agenda/">Agenda</a></li>
+                    <li class="nav-item"><a class="nav-link {% if '/berita/' in request.path %}active{% endif %}"
+                            href="/berita/">Berita</a></li>
+                    <li class="nav-item"><a class="nav-link {% if '/agenda/' in request.path %}active{% endif %}"
+                            href="/agenda/">Agenda</a></li>
                 </ul>
                 <!-- Form Pencarian (Fitur Rani) -->
                 <form class="d-flex" action="/cari/" method="GET">

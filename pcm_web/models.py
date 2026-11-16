@@ -56,16 +56,19 @@ class Ranting(models.Model):
 
 class AmalUsaha(models.Model):
     BIDANG_CHOICES = [
-        ('pendidikan', 'Pendidikan'),
-        ('kesehatan', 'Kesehatan'),
-        ('sosial', 'Sosial'),
-        ('ekonomi', 'Ekonomi'),
+        ('klinik', 'Klinik & Balai Pengobatan'),
+        ('lazismu', 'LazisMu'),
+        ('masjid', 'Masjid'),
+        ('panti-asuhan', 'Panti Asuhan'),
+        ('pondok-pesantren', 'Pondok Pesantren'),
+        ('rumah-sakit', 'Rumah Sakit'),
+        ('sekolah', 'Sekolah / Madrasah'),
+        ('toko', 'Toko'),
     ]
     nama = models.CharField(max_length=100)
     bidang = models.CharField(max_length=20, choices=BIDANG_CHOICES)
     deskripsi = models.TextField()
     alamat = models.TextField()
-    gambar = models.ImageField(upload_to='aum/', blank=True, null=True)
 
     class Meta:
         verbose_name_plural = "Amal Usaha"

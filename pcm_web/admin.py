@@ -7,7 +7,8 @@ admin.site.register(PesanMasuk)
 
 @admin.register(AmalUsaha)
 class AmalUsahaAdmin(admin.ModelAdmin):
-    list_display = ('nama', 'bidang', 'alamat')
+    list_display = ('nama', 'bidang', 'alamat', 'deskripsi')
+    fields = ('nama', 'bidang', 'alamat', 'deskripsi')
     list_filter = ('bidang',)
     search_fields = ('nama', 'alamat', 'deskripsi')
 
